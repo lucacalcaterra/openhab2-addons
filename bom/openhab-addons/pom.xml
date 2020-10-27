@@ -996,6 +996,11 @@
       <artifactId>org.openhab.binding.rfxcom</artifactId>
       <version>${project.version}</version>
     </dependency>
+	<dependency>
+      <groupId>org.openhab.addons.bundles</groupId>
+      <artifactId>org.openhab.binding.riscocloud</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.openhab.addons.bundles</groupId>
       <artifactId>org.openhab.binding.rme</artifactId>
