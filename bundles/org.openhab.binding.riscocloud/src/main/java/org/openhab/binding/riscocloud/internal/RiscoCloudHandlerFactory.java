@@ -14,11 +14,9 @@ package org.openhab.binding.riscocloud.internal;
 
 import static org.openhab.binding.riscocloud.internal.RiscoCloudBindingConstants.*;
 
-import java.util.Collections;
-import java.util.Set;
-
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.riscocloud.internal.handler.RiscoCloudAccountHandler;
+import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.binding.BaseThingHandlerFactory;
@@ -32,24 +30,29 @@ import org.osgi.service.component.annotations.Component;
  *
  * @author Luca Calcaterra - Initial contribution
  */
-@NonNullByDefault
 @Component(configurationPid = "binding.riscocloud", service = ThingHandlerFactory.class)
 public class RiscoCloudHandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set.of(THING_TYPE_SAMPLE);
-
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
-        return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
+        return SUPPORTED_THING_TYPE_UIDS.contains(thingTypeUID);
     }
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
-        if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
-            return new RiscoCloudHandler(thing);
+        if (THING_TYPE_RISCOCLOUD_ACCOUNT.equals(thingTypeUID)) {
+            RiscoCloudAccountHandler handler = new RiscoCloudAccountHandler((Bridge) thing);
+            return handler;
         }
+        // else if (THING_TYPE_ACDEVICE.equals(thingTypeUID)) {
+        // MelCloudDeviceHandler handler = new MelCloudDeviceHandler(thing);
+        // return handler;
+        // } else if (THING_TYPE_HEATPUMPDEVICE.equals(thingTypeUID)) {
+        // MelCloudHeatpumpDeviceHandler handler = new MelCloudHeatpumpDeviceHandler(thing);
+        // return handler;
+        // }
 
         return null;
     }

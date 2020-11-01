@@ -12,6 +12,11 @@
  */
 package org.openhab.binding.riscocloud.internal;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.core.thing.ThingTypeUID;
 
@@ -26,9 +31,13 @@ public class RiscoCloudBindingConstants {
 
     private static final String BINDING_ID = "riscocloud";
 
-    // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "sample");
+    // List of Bridge Type UIDs
+    public static final ThingTypeUID THING_TYPE_RISCOCLOUD_ACCOUNT = new ThingTypeUID(BINDING_ID, "riscocloudaccount");
 
     // List of all Channel ids
     public static final String CHANNEL_1 = "channel1";
+
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections
+            .unmodifiableSet(Stream.of(THING_TYPE_RISCOCLOUD_ACCOUNT).collect(Collectors.toSet()));
+
 }
