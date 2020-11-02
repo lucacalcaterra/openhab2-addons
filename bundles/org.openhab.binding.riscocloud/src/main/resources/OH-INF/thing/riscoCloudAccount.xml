@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="riscocloud"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+<bridge-type id="riscocloudaccount">
+        <label>RiscoCloud Account</label>
+        <description>RiscoCloud cloud service account</description>
+
+        <config-description>
+            <parameter name="username" type="text" required="true">
+                <label>Username</label>
+                <description>RiscoCloud email address</description>
+            </parameter>
+            <parameter name="password" type="text" required="true">
+                <context>password</context>
+                <label>Password</label>
+                <description>RiscoCloud password</description>
+            </parameter>
+            <parameter name="pincode" type="text" required="true">
+                <context>pincode</context>
+                <label>Pincode</label>
+                <description>RiscoCloud PIN Code</description>
+            </parameter>
+            <parameter name="language" type="text" required="true">
+                <label>Language</label>
+                <description>Language</description>                            
+                <default>en-en</default>
+            </parameter>
+        </config-description>
+    </bridge-type>
+</thing:thing-descriptions>

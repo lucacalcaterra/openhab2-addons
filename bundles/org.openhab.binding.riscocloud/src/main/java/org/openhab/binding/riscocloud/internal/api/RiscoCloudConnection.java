@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
+import org.openhab.binding.riscocloud.internal.api.json.Login;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.io.net.http.HttpUtil;
@@ -37,7 +38,9 @@ import com.google.gson.JsonSyntaxException;
  */
 public class RiscoCloudConnection {
 
-    private static final String LOGIN_URL = "https://app.melcloud.com/Mitsubishi.Wifi.Client/Login/ClientLogin";
+    private static final String BASE_URL = "https://www.riscocloud.com/webapi/api";
+    private static final String LOGIN_URL = BASE_URL + "/auth/login";
+    private static final String GETALL_URL = BASE_URL + "/wuws/site/GetAll";
     private static final String DEVICE_LIST_URL = "https://app.melcloud.com/Mitsubishi.Wifi.Client/User/ListDevices";
     private static final String DEVICE_URL = "https://app.melcloud.com/Mitsubishi.Wifi.Client/Device";
 
@@ -57,18 +60,36 @@ public class RiscoCloudConnection {
         setConnected(false);
         sessionKey = null;
         JsonObject jsonReq = new JsonObject();
-        jsonReq.addProperty("Email", username);
-        jsonReq.addProperty("Password", password);
-        jsonReq.addProperty("Language", languageId);
-        jsonReq.addProperty("AppVersion", "1.17.5.0");
-        jsonReq.addProperty("Persist", false);
-        jsonReq.addProperty("CaptchaResponse", (String) null);
+        jsonReq.addProperty("userName", username);
+        jsonReq.addProperty("password", password);
+        // jsonReq.addProperty("Language", languageId);
+        // jsonReq.addProperty("AppVersion", "1.17.5.0");
+        // jsonReq.addProperty("Persist", false);
+        // jsonReq.addProperty("CaptchaResponse", (String) null);
         InputStream data = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
 
+        // login and access site sequence
         try {
+            // login
             String loginResponse = HttpUtil.executeUrl("POST", LOGIN_URL, null, data, "application/json",
                     TIMEOUT_MILLISECONDS);
             logger.debug("Login response: {}", loginResponse);
+            Login.Root loginresp = gson.fromJson(loginResponse, Login.Root.class);
+            if (loginresp.getStatus() != 200) {
+
+                throw new RiscoCloudLoginException("Login error (status 200 not returned)");
+            }
+            sessionKey = loginresp.getResponse().getAccessToken();
+            if (sessionKey == null) {
+                throw new RiscoCloudLoginException("Accesstoken Empty after Login");
+            }
+
+            // site
+            String getAllResponse = HttpUtil.executeUrl("POST", GETALL_URL, getHeaderProperties(), data,
+                    "application/json", TIMEOUT_MILLISECONDS);
+            logger.debug("Login response: {}", loginResponse);
+
+            // logger.debug("test");
             // LoginClientResponse resp = gson.fromJson(loginResponse, LoginClientResponse.class);
             // if (resp.getErrorId() != null) {
             // String errorMsg = String.format("Login failed, error code: %s", resp.getErrorId());
@@ -161,7 +182,7 @@ public class RiscoCloudConnection {
 
     private Properties getHeaderProperties() {
         Properties headers = new Properties();
-        headers.put("X-MitsContextKey", sessionKey);
+        headers.put("Authorization", "Bearer " + sessionKey);
         return headers;
     }
 

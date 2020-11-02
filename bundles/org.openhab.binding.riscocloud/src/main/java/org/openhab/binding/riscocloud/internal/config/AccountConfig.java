@@ -22,7 +22,7 @@ public class AccountConfig {
 
     public String username;
     public String password;
-    public String siteId;
+    // public String siteId;
     public String pincode;
     public String language;
 

@@ -234,6 +234,7 @@
     <module>org.openhab.binding.regoheatpump</module>
     <module>org.openhab.binding.remoteopenhab</module>
     <module>org.openhab.binding.rfxcom</module>
+    <module>org.openhab.binding.riscocloud</module>
     <module>org.openhab.binding.rme</module>
     <module>org.openhab.binding.robonect</module>
     <module>org.openhab.binding.rotel</module>
