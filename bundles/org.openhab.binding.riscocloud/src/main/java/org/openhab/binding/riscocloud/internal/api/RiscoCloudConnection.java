@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import org.openhab.binding.riscocloud.internal.api.json.Login;
+import org.openhab.binding.riscocloud.internal.api.json.Site;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.io.net.http.HttpUtil;
@@ -54,6 +55,7 @@ public class RiscoCloudConnection {
 
     private boolean isConnected = false;
     private String sessionKey;
+    private String siteId;
 
     public void login(String username, String password, String languageId)
             throws RiscoCloudCommException, RiscoCloudLoginException {
@@ -85,9 +87,13 @@ public class RiscoCloudConnection {
             }
 
             // site
-            String getAllResponse = HttpUtil.executeUrl("POST", GETALL_URL, getHeaderProperties(), data,
+            String getAllFromSiteResponse = HttpUtil.executeUrl("POST", GETALL_URL, getHeaderProperties(), data,
                     "application/json", TIMEOUT_MILLISECONDS);
-            logger.debug("Login response: {}", loginResponse);
+            logger.debug("Login response: {}", getAllFromSiteResponse);
+            Site.Root getAllFromSiteResp = gson.fromJson(getAllFromSiteResponse, Site.Root.class);
+            siteId =
+
+
 
             // logger.debug("test");
             // LoginClientResponse resp = gson.fromJson(loginResponse, LoginClientResponse.class);
