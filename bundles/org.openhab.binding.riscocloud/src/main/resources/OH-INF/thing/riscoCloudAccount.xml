@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<thing:thing-descriptions bindingId="riscocloud"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
-	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+<thing:thing-descriptions bindingId="riscocloud" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0" xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-<bridge-type id="riscocloudaccount">
+    <bridge-type id="riscocloudaccount">
         <label>RiscoCloud Account</label>
         <description>RiscoCloud cloud service account</description>
 
@@ -25,7 +22,7 @@
             </parameter>
             <parameter name="language" type="text" required="true">
                 <label>Language</label>
-                <description>Language</description>                            
+                <description>Language</description>
                 <default>en-en</default>
             </parameter>
         </config-description>

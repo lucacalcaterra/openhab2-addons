@@ -55,7 +55,7 @@ public class RiscoCloudConnection {
 
     private boolean isConnected = false;
     private String sessionKey;
-    private String siteId;
+    private Integer siteId;
 
     public void login(String username, String password, String languageId)
             throws RiscoCloudCommException, RiscoCloudLoginException {
@@ -91,9 +91,11 @@ public class RiscoCloudConnection {
                     "application/json", TIMEOUT_MILLISECONDS);
             logger.debug("Login response: {}", getAllFromSiteResponse);
             Site.Root getAllFromSiteResp = gson.fromJson(getAllFromSiteResponse, Site.Root.class);
-            siteId =
-
-
+            if (getAllFromSiteResp.getStatus() != 200) {
+                throw new RiscoCloudLoginException("Get Site info error (status 200 not returned)");
+            }
+            siteId = getAllFromSiteResp.getResponse().get(0).getId();
+            logger.debug("check");
 
             // logger.debug("test");
             // LoginClientResponse resp = gson.fromJson(loginResponse, LoginClientResponse.class);
