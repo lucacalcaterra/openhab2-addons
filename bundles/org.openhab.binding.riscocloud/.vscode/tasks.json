@@ -2,11 +2,11 @@
   "version": "2.0.0",
   "options": {
     "env": {
-      "openhab_home": "c://oh30m1",
-      "openhab_runtime": "c://oh30m1/runtime",
-      "openhab_addons": "c://oh30m1/addons",
-      "openhab_logs": "C://oh30m1/userdata/logs",
-      "dist": "org.openhab.binding.riscocloud-3.0.0M1-SNAPSHOT.jar"
+      "openhab_home": "c://oh3",
+      "openhab_runtime": "c://oh3/runtime",
+      "openhab_addons": "c://oh3/addons",
+      "openhab_logs": "C://oh3/userdata/logs",
+      "dist": "org.openhab.binding.riscocloud-3.0.0-SNAPSHOT.jar"
     }
   },
   "tasks": [
@@ -43,14 +43,14 @@
     {
       "label": "mvn Compile (Online)",
       "type": "shell",
-      "command": "mvn clean install -DskipChecks=true -DskipTests=true -Dfeatures.verify.skip=true -Dspotless.check.skip=true -T 1C",
+      "command": "mvn clean install -DskipChecks=true",
 
       "problemMatcher": []
     },
     {
       "label": "mvn Compile (Offline)",
       "type": "shell",
-      "command": "mvn -o clean install -DskipChecks=true -DskipTests=true -Dfeatures.verify.skip=true -Dspotless.check.skip=true -T 1C",
+      "command": "mvn -o clean install -DskipChecks=true",
 
       "problemMatcher": []
     },

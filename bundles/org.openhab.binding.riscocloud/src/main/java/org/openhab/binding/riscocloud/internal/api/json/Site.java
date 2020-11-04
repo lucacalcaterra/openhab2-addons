@@ -156,6 +156,5 @@ public class Site {
         public void setUserInvitationState(Integer userInvitationState) {
             this.userInvitationState = userInvitationState;
         }
-
     }
 }

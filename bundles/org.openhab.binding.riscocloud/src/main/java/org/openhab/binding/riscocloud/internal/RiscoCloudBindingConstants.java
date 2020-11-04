@@ -39,5 +39,4 @@ public class RiscoCloudBindingConstants {
 
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections
             .unmodifiableSet(Stream.of(THING_TYPE_RISCOCLOUD_ACCOUNT).collect(Collectors.toSet()));
-
 }
