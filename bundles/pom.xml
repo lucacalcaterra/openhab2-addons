@@ -232,6 +232,7 @@
     <module>org.openhab.binding.pushbullet</module>
     <module>org.openhab.binding.radiothermostat</module>
     <module>org.openhab.binding.regoheatpump</module>
+    <module>org.openhab.binding.revogi</module>
     <module>org.openhab.binding.remoteopenhab</module>
     <module>org.openhab.binding.rfxcom</module>
     <module>org.openhab.binding.riscocloud</module>
@@ -278,6 +279,7 @@
     <module>org.openhab.binding.tibber</module>
     <module>org.openhab.binding.touchwand</module>
     <module>org.openhab.binding.tplinksmarthome</module>
+    <module>org.openhab.binding.tr064</module>
     <module>org.openhab.binding.tradfri</module>
     <module>org.openhab.binding.unifi</module>
     <module>org.openhab.binding.unifiedremote</module>
@@ -299,6 +301,7 @@
     <module>org.openhab.binding.wifiled</module>
     <module>org.openhab.binding.windcentrale</module>
     <module>org.openhab.binding.wlanthermo</module>
+    <module>org.openhab.binding.wled</module>
     <module>org.openhab.binding.xmltv</module>
     <module>org.openhab.binding.xmppclient</module>
     <module>org.openhab.binding.yamahareceiver</module>
