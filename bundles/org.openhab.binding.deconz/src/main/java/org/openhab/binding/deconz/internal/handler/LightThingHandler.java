@@ -29,12 +29,7 @@ import org.openhab.binding.deconz.internal.dto.LightMessage;
 import org.openhab.binding.deconz.internal.dto.LightState;
 import org.openhab.binding.deconz.internal.netutils.AsyncHttpClient;
 import org.openhab.binding.deconz.internal.types.ResourceType;
-import org.openhab.core.library.types.DecimalType;
-import org.openhab.core.library.types.HSBType;
-import org.openhab.core.library.types.OnOffType;
-import org.openhab.core.library.types.PercentType;
-import org.openhab.core.library.types.StopMoveType;
-import org.openhab.core.library.types.UpDownType;
+import org.openhab.core.library.types.*;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
@@ -71,6 +66,7 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
             THING_TYPE_WINDOW_COVERING, THING_TYPE_WARNING_DEVICE);
 
     private static final long DEFAULT_COMMAND_EXPIRY_TIME = 250; // in ms
+    private static final int BRIGHTNESS_DIM_STEP = 26; // ~ 10%
 
     private final Logger logger = LoggerFactory.getLogger(LightThingHandler.class);
 
@@ -151,6 +147,17 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
             case CHANNEL_COLOR:
                 if (command instanceof OnOffType) {
                     newLightState.on = (command == OnOffType.ON);
+                } else if (command instanceof IncreaseDecreaseType) {
+                    // try to get best value for current brightness
+                    int oldBri = currentBri != null ? currentBri
+                            : (Boolean.TRUE.equals(currentOn) ? BRIGHTNESS_MAX : BRIGHTNESS_MIN);
+                    if (command.equals(IncreaseDecreaseType.INCREASE)) {
+                        newLightState.bri = Util.constrainToRange(oldBri + BRIGHTNESS_DIM_STEP, BRIGHTNESS_MIN,
+                                BRIGHTNESS_MAX);
+                    } else {
+                        newLightState.bri = Util.constrainToRange(oldBri - BRIGHTNESS_DIM_STEP, BRIGHTNESS_MIN,
+                                BRIGHTNESS_MAX);
+                    }
                 } else if (command instanceof HSBType) {
                     HSBType hsbCommand = (HSBType) command;
 
@@ -203,10 +210,10 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
                 if (command instanceof UpDownType) {
                     newLightState.on = (command == UpDownType.DOWN);
                 } else if (command == StopMoveType.STOP) {
-                    if (currentOn != null && currentOn && currentBri != null && currentBri <= 254) {
+                    if (currentOn != null && currentOn && currentBri != null && currentBri <= BRIGHTNESS_MAX) {
                         // going down or currently stop (254 because of rounding error)
                         newLightState.on = true;
-                    } else if (currentOn != null && !currentOn && currentBri != null && currentBri > 0) {
+                    } else if (currentOn != null && !currentOn && currentBri != null && currentBri > BRIGHTNESS_MIN) {
                         // going up or currently stopped
                         newLightState.on = false;
                     }
@@ -221,16 +228,17 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
                 return;
         }
 
-        if (newLightState.on != null && !newLightState.on) {
+        Boolean newOn = newLightState.on;
+        if (newOn != null && !newOn) {
             // if light shall be off, no other commands are allowed, so reset the new light state
             newLightState.clear();
             newLightState.on = false;
         }
 
         sendCommand(newLightState, command, channelUID, () -> {
+            Integer transitionTime = newLightState.transitiontime;
             lastCommandExpireTimestamp = System.currentTimeMillis()
-                    + (newLightState.transitiontime != null ? newLightState.transitiontime
-                            : DEFAULT_COMMAND_EXPIRY_TIME);
+                    + (transitionTime != null ? transitionTime : DEFAULT_COMMAND_EXPIRY_TIME);
             lastCommand = newLightState;
         });
     }
@@ -241,16 +249,18 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
             return null;
         } else if (r.getResponseCode() == 200) {
             LightMessage lightMessage = gson.fromJson(r.getBody(), LightMessage.class);
-            if (lightMessage != null && needsPropertyUpdate) {
+            if (needsPropertyUpdate) {
                 // if we did not receive an ctmin/ctmax, then we probably don't need it
                 needsPropertyUpdate = false;
 
-                if (lightMessage.ctmin != null && lightMessage.ctmax != null) {
+                Integer ctmax = lightMessage.ctmax;
+                Integer ctmin = lightMessage.ctmin;
+                if (ctmin != null && ctmax != null) {
                     Map<String, String> properties = new HashMap<>(thing.getProperties());
                     properties.put(PROPERTY_CT_MAX,
-                            Integer.toString(Util.constrainToRange(lightMessage.ctmax, ZCL_CT_MIN, ZCL_CT_MAX)));
+                            Integer.toString(Util.constrainToRange(ctmax, ZCL_CT_MIN, ZCL_CT_MAX)));
                     properties.put(PROPERTY_CT_MIN,
-                            Integer.toString(Util.constrainToRange(lightMessage.ctmin, ZCL_CT_MIN, ZCL_CT_MAX)));
+                            Integer.toString(Util.constrainToRange(ctmin, ZCL_CT_MIN, ZCL_CT_MAX)));
                     updateProperties(properties);
                 }
             }
@@ -271,6 +281,8 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
 
     private void valueUpdated(String channelId, LightState newState) {
         Integer bri = newState.bri;
+        Integer hue = newState.hue;
+        Integer sat = newState.sat;
         Boolean on = newState.on;
 
         switch (channelId) {
@@ -285,15 +297,13 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
             case CHANNEL_COLOR:
                 if (on != null && on == false) {
                     updateState(channelId, OnOffType.OFF);
-                } else if (bri != null && newState.colormode != null && newState.colormode.equals("xy")) {
+                } else if (bri != null && "xy".equals(newState.colormode)) {
                     final double @Nullable [] xy = newState.xy;
                     if (xy != null && xy.length == 2) {
                         HSBType color = HSBType.fromXY((float) xy[0], (float) xy[1]);
                         updateState(channelId, new HSBType(color.getHue(), color.getSaturation(), toPercentType(bri)));
                     }
-                } else if (bri != null && newState.hue != null && newState.sat != null) {
-                    final Integer hue = newState.hue;
-                    final Integer sat = newState.sat;
+                } else if (bri != null && hue != null && sat != null) {
                     updateState(channelId,
                             new HSBType(new DecimalType(hue / HUE_FACTOR), toPercentType(sat), toPercentType(bri)));
                 }
@@ -333,7 +343,7 @@ public class LightThingHandler extends DeconzBaseThingHandler<LightMessage> {
                     return;
                 }
                 lightStateCache = lightState;
-                if (lightState.reachable != null && lightState.reachable) {
+                if (Boolean.TRUE.equals(lightState.reachable)) {
                     updateStatus(ThingStatus.ONLINE);
                     thing.getChannels().stream().map(c -> c.getUID().getId()).forEach(c -> valueUpdated(c, lightState));
                 } else {
