@@ -95,6 +95,11 @@ public class RiscoCloudConnection {
                 throw new RiscoCloudLoginException("Get Site info error (status 200 not returned)");
             }
             siteId = getAllFromSiteResp.getResponse().get(0).getId();
+            String a = "ciao";
+            String b = "test";
+            String d = "test2";
+            String e = "ciao";
+            String f = "f";
             logger.debug("check");
 
             // logger.debug("test");

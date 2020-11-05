@@ -43,15 +43,15 @@
     {
       "label": "mvn Compile (Online)",
       "type": "shell",
-      "command": "mvn clean install -DskipChecks=true",
-
+      "command": "mvn",
+      "args": ["clean", "install", "-DskipChecks"],
       "problemMatcher": []
     },
     {
       "label": "mvn Compile (Offline)",
       "type": "shell",
-      "command": "mvn -o clean install -DskipChecks=true",
-
+      "command": "mvn",
+      "args": ["-o", "clean", "install", "-DskipChecks"],
       "problemMatcher": []
     },
     {
