@@ -16,10 +16,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse;
+import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse.Site;
 import org.openhab.binding.riscocloud.internal.api.json.Login;
-import org.openhab.binding.riscocloud.internal.api.json.Site;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.io.net.http.HttpUtil;
@@ -47,7 +50,8 @@ public class RiscoCloudConnection {
 
     private static final int TIMEOUT_MILLISECONDS = 10000;
 
-    // Gson objects are safe to share across threads and are somewhat expensive to construct. Use a single instance.
+    // Gson objects are safe to share across threads and are somewhat expensive to
+    // construct. Use a single instance.
     private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
@@ -55,7 +59,7 @@ public class RiscoCloudConnection {
 
     private boolean isConnected = false;
     private String sessionKey;
-    private Integer siteId;
+    // private Integer siteId;
 
     public void login(String username, String password, String languageId)
             throws RiscoCloudCommException, RiscoCloudLoginException {
@@ -86,26 +90,12 @@ public class RiscoCloudConnection {
                 throw new RiscoCloudLoginException("Accesstoken Empty after Login");
             }
 
-            // site
-            String getAllFromSiteResponse = HttpUtil.executeUrl("POST", GETALL_URL, getHeaderProperties(), data,
-                    "application/json", TIMEOUT_MILLISECONDS);
-            logger.debug("Login response: {}", getAllFromSiteResponse);
-            Site.Root getAllFromSiteResp = gson.fromJson(getAllFromSiteResponse, Site.Root.class);
-            if (getAllFromSiteResp.getStatus() != 200) {
-                throw new RiscoCloudLoginException("Get Site info error (status 200 not returned)");
-            }
-            siteId = getAllFromSiteResp.getResponse().get(0).getId();
-            String a = "ciao";
-            String b = "test";
-            String d = "test2";
-            String e = "ciao";
-            String f = "f";
-            logger.debug("check");
-
             // logger.debug("test");
-            // LoginClientResponse resp = gson.fromJson(loginResponse, LoginClientResponse.class);
+            // LoginClientResponse resp = gson.fromJson(loginResponse,
+            // LoginClientResponse.class);
             // if (resp.getErrorId() != null) {
-            // String errorMsg = String.format("Login failed, error code: %s", resp.getErrorId());
+            // String errorMsg = String.format("Login failed, error code: %s",
+            // resp.getErrorId());
             // if (resp.getErrorMessage() != null) {
             // errorMsg = String.format("%s (%s)", errorMsg, resp.getErrorMessage());
             // }
@@ -118,14 +108,37 @@ public class RiscoCloudConnection {
         }
     }
 
+    public List<Site> fetchSitesList() throws RiscoCloudCommException {
+        try {
+            String getAllSitesResponse = HttpUtil.executeUrl("POST", GETALL_URL, getHeaderProperties(), null,
+                    "application/json", TIMEOUT_MILLISECONDS);
+            logger.debug("Login response: {}", getAllSitesResponse);
+
+            AllSitesResponse.Root getAllSitesResp = gson.fromJson(getAllSitesResponse, AllSitesResponse.Root.class);
+            if (getAllSitesResp.getStatus() != 200) {
+                throw new RiscoCloudCommException("Get Site info error (status 200 not returned)");
+            }
+            List<Site> sites = new ArrayList<>();
+            sites = getAllSitesResp.getResponse();
+            logger.debug("check");
+
+            return sites;
+        } catch (IOException | JsonSyntaxException e) {
+            setConnected(false);
+            throw new RiscoCloudCommException("Error occurred during device list poll", e);
+        }
+    }
+
     // public List<Device> fetchDeviceList() throws RiscoCloudCommException {
     // assertConnected();
     // try {
-    // String response = HttpUtil.executeUrl("GET", DEVICE_LIST_URL, getHeaderProperties(), null, null,
+    // String response = HttpUtil.executeUrl("GET", DEVICE_LIST_URL,
+    // getHeaderProperties(), null, null,
     // TIMEOUT_MILLISECONDS);
     // logger.debug("Device list response: {}", response);
     // List<Device> devices = new ArrayList<>();
-    // ListDevicesResponse[] buildings = gson.fromJson(response, ListDevicesResponse[].class);
+    // ListDevicesResponse[] buildings = gson.fromJson(response,
+    // ListDevicesResponse[].class);
     // Arrays.asList(buildings).forEach(building -> {
     // if (building.getStructure().getDevices() != null) {
     // devices.addAll(building.getStructure().getDevices());
@@ -151,37 +164,46 @@ public class RiscoCloudConnection {
     // return devices;
     // } catch (IOException | JsonSyntaxException e) {
     // setConnected(false);
-    // throw new RiscoCloudCommException("Error occurred during device list poll", e);
+    // throw new RiscoCloudCommException("Error occurred during device list poll",
+    // e);
     // }
     // }
     //
-    // public DeviceStatus fetchDeviceStatus(int deviceId, int buildingId) throws RiscoCloudCommException {
+    // public DeviceStatus fetchDeviceStatus(int deviceId, int buildingId) throws
+    // RiscoCloudCommException {
     // assertConnected();
-    // String url = DEVICE_URL + String.format("/Get?id=%d&buildingID=%d", deviceId, buildingId);
+    // String url = DEVICE_URL + String.format("/Get?id=%d&buildingID=%d", deviceId,
+    // buildingId);
     // try {
-    // String response = HttpUtil.executeUrl("GET", url, getHeaderProperties(), null, null, TIMEOUT_MILLISECONDS);
+    // String response = HttpUtil.executeUrl("GET", url, getHeaderProperties(),
+    // null, null, TIMEOUT_MILLISECONDS);
     // logger.debug("Device status response: {}", response);
     // DeviceStatus deviceStatus = gson.fromJson(response, DeviceStatus.class);
     // return deviceStatus;
     // } catch (IOException | JsonSyntaxException e) {
     // setConnected(false);
-    // throw new RiscoCloudCommException("Error occurred during device status fetch", e);
+    // throw new RiscoCloudCommException("Error occurred during device status
+    // fetch", e);
     // }
     // }
     //
-    // public DeviceStatus sendDeviceStatus(DeviceStatus deviceStatus) throws RiscoCloudCommException {
+    // public DeviceStatus sendDeviceStatus(DeviceStatus deviceStatus) throws
+    // RiscoCloudCommException {
     // assertConnected();
     // String content = gson.toJson(deviceStatus, DeviceStatus.class);
     // logger.debug("Sending device status: {}", content);
-    // InputStream data = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+    // InputStream data = new
+    // ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
     // try {
-    // String response = HttpUtil.executeUrl("POST", DEVICE_URL + "/SetAta", getHeaderProperties(), data,
+    // String response = HttpUtil.executeUrl("POST", DEVICE_URL + "/SetAta",
+    // getHeaderProperties(), data,
     // "application/json", TIMEOUT_MILLISECONDS);
     // logger.debug("Device status sending response: {}", response);
     // return gson.fromJson(response, DeviceStatus.class);
     // } catch (IOException | JsonSyntaxException e) {
     // setConnected(false);
-    // throw new RiscoCloudCommException("Error occurred during device command sending", e);
+    // throw new RiscoCloudCommException("Error occurred during device command
+    // sending", e);
     // }
     // }
 

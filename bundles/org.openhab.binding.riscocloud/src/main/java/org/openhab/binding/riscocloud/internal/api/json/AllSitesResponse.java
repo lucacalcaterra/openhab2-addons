@@ -5,22 +5,22 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Site {
+public class AllSitesResponse {
 
     public class Root {
 
         @SerializedName("response")
         @Expose
-        private List<Response> response = null;
+        private List<Site> response = null;
         @SerializedName("status")
         @Expose
         private Integer status;
 
-        public List<Response> getResponse() {
+        public List<Site> getResponse() {
             return response;
         }
 
-        public void setResponse(List<Response> response) {
+        public void setResponse(List<Site> response) {
             this.response = response;
         }
 
@@ -33,7 +33,7 @@ public class Site {
         }
     }
 
-    public class Response {
+    public class Site {
 
         @SerializedName("companyId")
         @Expose

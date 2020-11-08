@@ -12,10 +12,13 @@
  */
 package org.openhab.binding.riscocloud.internal.handler;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.openhab.binding.riscocloud.internal.api.RiscoCloudConnection;
+import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse.Site;
 import org.openhab.binding.riscocloud.internal.config.AccountConfig;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
@@ -40,7 +43,7 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
     private final Logger logger = LoggerFactory.getLogger(RiscoCloudAccountHandler.class);
 
     private RiscoCloudConnection connection;
-    // private List<Device> devices;
+    private List<Site> sites;
     private ScheduledFuture<?> connectionCheckTask;
     private AccountConfig config;
     private boolean loginCredentialError;
@@ -59,7 +62,7 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
         logger.debug("Initializing RiscoCloud account handler.");
         config = getConfigAs(AccountConfig.class);
         connection = new RiscoCloudConnection();
-        // devices = Collections.emptyList();
+        sites = Collections.emptyList();
         loginCredentialError = false;
         startConnectionCheck();
     }
@@ -69,7 +72,7 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
         logger.debug("Running dispose()");
         stopConnectionCheck();
         connection = null;
-        // devices = Collections.emptyList();
+        sites = Collections.emptyList();
         config = null;
     }
 
@@ -81,10 +84,10 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
         return getThing().getUID();
     }
 
-    // public List<Device> getDeviceList() throws RiscoCloudCommException, RiscoCloudLoginException {
-    // connectIfNotConnected();
-    // return connection.fetchDeviceList();
-    // }
+    public List<Site> getSitesList() throws RiscoCloudCommException, RiscoCloudLoginException {
+        connectIfNotConnected();
+        return connection.fetchSitesList();
+    }
 
     private void connect() throws RiscoCloudCommException, RiscoCloudLoginException {
         if (loginCredentialError) {
@@ -94,7 +97,7 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
         updateStatus(ThingStatus.OFFLINE);
         try {
             connection.login(config.username, config.password, config.language);
-            // devices = connection.fetchDeviceList();
+            sites = connection.fetchSitesList();
             updateStatus(ThingStatus.ONLINE);
         } catch (RiscoCloudLoginException e) {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, e.getMessage());
