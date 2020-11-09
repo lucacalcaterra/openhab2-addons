@@ -96,7 +96,7 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
         logger.debug("Initializing connection to RiscoCloud");
         updateStatus(ThingStatus.OFFLINE);
         try {
-            connection.login(config.username, config.password, config.language);
+            connection.login(config.username, config.password, config.pincode, config.language);
             sites = connection.fetchSitesList();
             updateStatus(ThingStatus.ONLINE);
         } catch (RiscoCloudLoginException e) {

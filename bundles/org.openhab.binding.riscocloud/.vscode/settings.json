@@ -17,5 +17,6 @@
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
-  "explorer.compactFolders": false
+  "explorer.compactFolders": false,
+  "java.autobuild.enabled": true
 }

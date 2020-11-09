@@ -22,7 +22,9 @@ import java.util.Properties;
 
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse;
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse.Site;
+import org.openhab.binding.riscocloud.internal.api.json.CpStateResponse;
 import org.openhab.binding.riscocloud.internal.api.json.Login;
+import org.openhab.binding.riscocloud.internal.api.json.SiteLoginResponse;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.io.net.http.HttpUtil;
@@ -45,6 +47,8 @@ public class RiscoCloudConnection {
     private static final String BASE_URL = "https://www.riscocloud.com/webapi/api";
     private static final String LOGIN_URL = BASE_URL + "/auth/login";
     private static final String GETALL_URL = BASE_URL + "/wuws/site/GetAll";
+    private static final String LOGINSITEPREFIX_URL = BASE_URL + "/wuws/site";
+    private static final String CPSTATEPREFIX_URL = BASE_URL + "/wuws/site";
     private static final String DEVICE_LIST_URL = "https://app.melcloud.com/Mitsubishi.Wifi.Client/User/ListDevices";
     private static final String DEVICE_URL = "https://app.melcloud.com/Mitsubishi.Wifi.Client/Device";
 
@@ -58,13 +62,14 @@ public class RiscoCloudConnection {
     private final Logger logger = LoggerFactory.getLogger(RiscoCloudConnection.class);
 
     private boolean isConnected = false;
-    private String sessionKey;
-    // private Integer siteId;
+    private String accessToken;
+    private String sessionId;
+    private Integer siteId;
 
-    public void login(String username, String password, String languageId)
+    public void login(String username, String password, String pinCode, String languageId)
             throws RiscoCloudCommException, RiscoCloudLoginException {
         setConnected(false);
-        sessionKey = null;
+        accessToken = null;
         JsonObject jsonReq = new JsonObject();
         jsonReq.addProperty("userName", username);
         jsonReq.addProperty("password", password);
@@ -82,13 +87,34 @@ public class RiscoCloudConnection {
             logger.debug("Login response: {}", loginResponse);
             Login.Root loginresp = gson.fromJson(loginResponse, Login.Root.class);
             if (loginresp.getStatus() != 200) {
-
                 throw new RiscoCloudLoginException("Login error (status 200 not returned)");
             }
-            sessionKey = loginresp.getResponse().getAccessToken();
-            if (sessionKey == null) {
+            accessToken = loginresp.getResponse().getAccessToken();
+            if (accessToken == null) {
                 throw new RiscoCloudLoginException("Accesstoken Empty after Login");
             }
+            // fetch first Site ID
+            siteId = fetchSitesList().get(0).getId();
+
+            // Site Login
+            JsonObject jsonReqLogin = new JsonObject();
+            jsonReqLogin.addProperty("pinCode", pinCode);
+            jsonReqLogin.addProperty("languageId", languageId);
+
+            InputStream dataSiteLogin = new ByteArrayInputStream(
+                    jsonReqLogin.toString().getBytes(StandardCharsets.UTF_8));
+            String loginSiteResponse = HttpUtil.executeUrl("POST", LOGINSITEPREFIX_URL + "/" + siteId + "/Login",
+                    getHeaderProperties(), dataSiteLogin, "application/json", TIMEOUT_MILLISECONDS);
+            logger.debug("Login site response: {}", loginSiteResponse);
+            SiteLoginResponse.Root siteLoginResp = gson.fromJson(loginSiteResponse, SiteLoginResponse.Root.class);
+            if (siteLoginResp.getStatus() != 200) {
+                throw new RiscoCloudLoginException("Site " + siteId + " Login error (status 200 not returned)");
+            }
+            // get SessionId - token for next requests
+            sessionId = siteLoginResp.getResponse().getSessionId();
+
+            // is connected !
+            setConnected(true);
 
             // logger.debug("test");
             // LoginClientResponse resp = gson.fromJson(loginResponse,
@@ -120,9 +146,31 @@ public class RiscoCloudConnection {
             }
             List<Site> sites = new ArrayList<>();
             sites = getAllSitesResp.getResponse();
+            logger.debug("prova");
             logger.debug("check");
 
             return sites;
+        } catch (IOException | JsonSyntaxException e) {
+            setConnected(false);
+            throw new RiscoCloudCommException("Error occurred during device list poll", e);
+        }
+    }
+
+    public CpStateResponse.State fetchCpState() throws RiscoCloudCommException {
+
+        try {
+            JsonObject jsonCpState = new JsonObject();
+            jsonCpState.addProperty("sessionToken", sessionId);
+
+            InputStream cpStatedata = new ByteArrayInputStream(jsonCpState.toString().getBytes(StandardCharsets.UTF_8));
+            String cpStateResponse = HttpUtil.executeUrl("POST",
+                    CPSTATEPREFIX_URL + "/" + siteId + "/ControlPanel/GetState", getHeaderProperties(), cpStatedata,
+                    "application/json", TIMEOUT_MILLISECONDS);
+            logger.debug("Get ControlPanel State response: {}", cpStateResponse);
+
+            CpStateResponse.State cpStateResp = gson.fromJson(cpStateResponse, CpStateResponse.State.class);
+            return cpStateResp;
+
         } catch (IOException | JsonSyntaxException e) {
             setConnected(false);
             throw new RiscoCloudCommException("Error occurred during device list poll", e);
@@ -217,7 +265,7 @@ public class RiscoCloudConnection {
 
     private Properties getHeaderProperties() {
         Properties headers = new Properties();
-        headers.put("Authorization", "Bearer " + sessionKey);
+        headers.put("Authorization", "Bearer " + accessToken);
         return headers;
     }
 

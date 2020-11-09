@@ -33,10 +33,16 @@ public class RiscoCloudBindingConstants {
 
     // List of Bridge Type UIDs
     public static final ThingTypeUID THING_TYPE_RISCOCLOUD_ACCOUNT = new ThingTypeUID(BINDING_ID, "riscocloudaccount");
+    // List of all Thing Type UIDs
+    public static final ThingTypeUID THING_TYPE_PARTITION = new ThingTypeUID(BINDING_ID,
+            "riscocloudpartition");
 
     // List of all Channel ids
     public static final String CHANNEL_1 = "channel1";
 
-    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections
-            .unmodifiableSet(Stream.of(THING_TYPE_RISCOCLOUD_ACCOUNT).collect(Collectors.toSet()));
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections.unmodifiableSet(
+            Stream.of(THING_TYPE_RISCOCLOUD_ACCOUNT, THING_TYPE_PARTITION).collect(Collectors.toSet()));
+
+    public static final Set<ThingTypeUID> DISCOVERABLE_THING_TYPE_UIDS = Collections
+            .unmodifiableSet(Stream.of(THING_TYPE_PARTITION).collect(Collectors.toSet()));
 }
