@@ -23,6 +23,7 @@ import java.util.Properties;
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse;
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse.Site;
 import org.openhab.binding.riscocloud.internal.api.json.CpStateResponse;
+import org.openhab.binding.riscocloud.internal.api.json.CpStateResponse.Partition;
 import org.openhab.binding.riscocloud.internal.api.json.Login;
 import org.openhab.binding.riscocloud.internal.api.json.SiteLoginResponse;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
@@ -63,6 +64,7 @@ public class RiscoCloudConnection {
     private String accessToken;
     private String sessionId;
     private Integer siteId;
+    private List<Partition> partitionsList;
 
     public void login(String username, String password, String pinCode, String languageId)
             throws RiscoCloudCommException, RiscoCloudLoginException {
@@ -167,12 +169,18 @@ public class RiscoCloudConnection {
             logger.debug("Get ControlPanel State response: {}", cpStateResponse);
 
             CpStateResponse.State cpStateResp = gson.fromJson(cpStateResponse, CpStateResponse.State.class);
+
+            partitionsList = cpStateResp.getStatus().getPartitions();
             return cpStateResp;
 
         } catch (IOException | JsonSyntaxException e) {
             setConnected(false);
             throw new RiscoCloudCommException("Error occurred during device list poll", e);
         }
+    }
+
+    public List<Partition> getPartitionsList() {
+        return partitionsList;
     }
 
     // public List<Device> fetchDeviceList() throws RiscoCloudCommException {
