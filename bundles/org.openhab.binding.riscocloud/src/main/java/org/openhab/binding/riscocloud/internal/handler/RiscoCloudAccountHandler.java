@@ -12,6 +12,7 @@
  */
 package org.openhab.binding.riscocloud.internal.handler;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import org.openhab.binding.riscocloud.internal.api.RiscoCloudConnection;
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse.Site;
 import org.openhab.binding.riscocloud.internal.config.AccountConfig;
+import org.openhab.binding.riscocloud.internal.discovery.RiscoCloudDiscoveryService;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.thing.Bridge;
@@ -28,6 +30,7 @@ import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.BaseBridgeHandler;
+import org.openhab.core.thing.binding.ThingHandlerService;
 import org.openhab.core.types.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +55,10 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
         super(bridge);
     }
 
-    // @Override
-    // public Collection<Class<? extends ThingHandlerService>> getServices() {
-    // return Collections.singleton(RiscoCloudDiscoveryService.class);
-    // }
+    @Override
+    public Collection<Class<? extends ThingHandlerService>> getServices() {
+        return Collections.singleton(RiscoCloudDiscoveryService.class);
+    }
 
     @Override
     public void initialize() {

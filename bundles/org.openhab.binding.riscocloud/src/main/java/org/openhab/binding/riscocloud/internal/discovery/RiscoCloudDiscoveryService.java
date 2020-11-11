@@ -12,7 +12,6 @@
  */
 package org.openhab.binding.riscocloud.internal.discovery;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -20,13 +19,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.riscocloud.internal.RiscoCloudBindingConstants;
+import org.openhab.binding.riscocloud.internal.api.json.CpStateResponse.Partition;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.binding.riscocloud.internal.handler.RiscoCloudAccountHandler;
 import org.openhab.core.config.discovery.AbstractDiscoveryService;
-import org.openhab.core.config.discovery.DiscoveryResultBuilder;
 import org.openhab.core.config.discovery.DiscoveryService;
-import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.ThingHandler;
 import org.openhab.core.thing.binding.ThingHandlerService;
@@ -51,7 +49,7 @@ public class RiscoCloudDiscoveryService extends AbstractDiscoveryService
     private ScheduledFuture<?> scanTask;
 
     /**
-     * Creates a MelCloudDiscoveryService with enabled autostart.
+     * Creates a RiscoCloudDiscoveryService with enabled autostart.
      */
     public RiscoCloudDiscoveryService() {
         super(RiscoCloudBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, DISCOVER_TIMEOUT_SECONDS, true);
@@ -101,42 +99,42 @@ public class RiscoCloudDiscoveryService extends AbstractDiscoveryService
 
         if (riscoCloudHandler != null) {
             try {
-                List<Device> deviceList = riscoCloudHandler.getDeviceList();
+                List<Partition> deviceList = riscoCloudHandler.g;
 
                 if (deviceList == null) {
                     logger.debug("No devices found");
                 } else {
                     ThingUID bridgeUID = riscoCloudHandler.getThing().getUID();
 
-                    deviceList.forEach(device -> {
-                        ThingTypeUID thingTypeUid = null;
-                        if (device.getType() == 0) {
-                            thingTypeUid = THING_TYPE_ACDEVICE;
-                        } else if (device.getType() == 1) {
-                            thingTypeUid = THING_TYPE_HEATPUMPDEVICE;
-                        } else {
-                            logger.debug("Unsupported device found: name {} : type: {}", device.getDeviceName(),
-                                    device.getType());
-                            return;
-                        }
-                        ThingUID deviceThing = new ThingUID(thingTypeUid, riscoCloudHandler.getThing().getUID(),
-                                device.getDeviceID().toString());
+                    // deviceList.forEach(device -> {
+                    // ThingTypeUID thingTypeUid = null;
+                    // if (device.getType() == 0) {
+                    // thingTypeUid = THING_TYPE_ACDEVICE;
+                    // } else if (device.getType() == 1) {
+                    // thingTypeUid = THING_TYPE_HEATPUMPDEVICE;
+                    // } else {
+                    // logger.debug("Unsupported device found: name {} : type: {}", device.getDeviceName(),
+                    // device.getType());
+                    // return;
+                    // }
+                    // ThingUID deviceThing = new ThingUID(thingTypeUid, riscoCloudHandler.getThing().getUID(),
+                    // device.getDeviceID().toString());
 
-                        Map<String, Object> deviceProperties = new HashMap<>();
-                        deviceProperties.put("deviceID", device.getDeviceID().toString());
-                        deviceProperties.put("serialNumber", device.getSerialNumber().toString());
-                        deviceProperties.put("macAddress", device.getMacAddress().toString());
-                        deviceProperties.put("deviceName", device.getDeviceName().toString());
-                        deviceProperties.put("buildingID", device.getBuildingID().toString());
+                    // Map<String, Object> deviceProperties = new HashMap<>();
+                    // deviceProperties.put("deviceID", device.getDeviceID().toString());
+                    // deviceProperties.put("serialNumber", device.getSerialNumber().toString());
+                    // deviceProperties.put("macAddress", device.getMacAddress().toString());
+                    // deviceProperties.put("deviceName", device.getDeviceName().toString());
+                    // deviceProperties.put("buildingID", device.getBuildingID().toString());
 
-                        String label = createLabel(device);
-                        logger.debug("Found device: {} : {}", label, deviceProperties);
+                    // String label = createLabel(device);
+                    // logger.debug("Found device: {} : {}", label, deviceProperties);
 
-                        thingDiscovered(DiscoveryResultBuilder.create(deviceThing).withLabel(label)
-                                .withProperties(deviceProperties)
-                                .withRepresentationProperty(device.getDeviceID().toString()).withBridge(bridgeUID)
-                                .build());
-                    });
+                    // thingDiscovered(DiscoveryResultBuilder.create(deviceThing).withLabel(label)
+                    // .withProperties(deviceProperties)
+                    // .withRepresentationProperty(device.getDeviceID().toString()).withBridge(bridgeUID)
+                    // .build());
+                    // });
                 }
             } catch (RiscoCloudLoginException e) {
                 logger.debug("Login error occurred during device list fetch, reason {}. ", e.getMessage(), e);
@@ -146,19 +144,19 @@ public class RiscoCloudDiscoveryService extends AbstractDiscoveryService
         }
     }
 
-    private String createLabel(Device device) {
-        StringBuilder sb = new StringBuilder();
-        if (device.getType() == 0) {
-            sb.append("A.C. Device - ");
-        } else if (device.getType() == 1) {
-            sb.append("Heatpump Device - ");
-        }
-        if (device.getBuildingName() != null && device.getBuildingName() instanceof String) {
-            sb.append(device.getBuildingName()).append(" - ");
-        }
-        sb.append(device.getDeviceName());
-        return sb.toString();
-    }
+    // private String createLabel(Device device) {
+    // StringBuilder sb = new StringBuilder();
+    // if (device.getType() == 0) {
+    // sb.append("A.C. Device - ");
+    // } else if (device.getType() == 1) {
+    // sb.append("Heatpump Device - ");
+    // }
+    // if (device.getBuildingName() != null && device.getBuildingName() instanceof String) {
+    // sb.append(device.getBuildingName()).append(" - ");
+    // }
+    // sb.append(device.getDeviceName());
+    // return sb.toString();
+    // }
 
     @Override
     public void setThingHandler(@Nullable ThingHandler handler) {

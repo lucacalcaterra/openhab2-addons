@@ -49,8 +49,6 @@ public class RiscoCloudConnection {
     private static final String GETALL_URL = BASE_URL + "/wuws/site/GetAll";
     private static final String LOGINSITEPREFIX_URL = BASE_URL + "/wuws/site";
     private static final String CPSTATEPREFIX_URL = BASE_URL + "/wuws/site";
-    private static final String DEVICE_LIST_URL = "https://app.melcloud.com/Mitsubishi.Wifi.Client/User/ListDevices";
-    private static final String DEVICE_URL = "https://app.melcloud.com/Mitsubishi.Wifi.Client/Device";
 
     private static final int TIMEOUT_MILLISECONDS = 10000;
 
@@ -146,7 +144,7 @@ public class RiscoCloudConnection {
             }
             List<Site> sites = new ArrayList<>();
             sites = getAllSitesResp.getResponse();
-            logger.debug("prova");
+
             logger.debug("check");
 
             return sites;

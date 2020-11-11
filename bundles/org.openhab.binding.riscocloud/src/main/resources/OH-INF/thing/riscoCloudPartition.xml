@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <thing:thing-descriptions bindingId="riscocloud"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
-    xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-    <thing-type id="partition">
-        <supported-bridge-type-refs>
-            <bridge-type-ref id="riscocloudaccount"/>
-        </supported-bridge-type-refs>
-        <label>Partition</label>
-        <description>Risco Alarm Partition</description>
+	<thing-type id="partition">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="riscocloudaccount"/>
+		</supported-bridge-type-refs>
+		<label>Partition</label>
+		<description>Risco Alarm Partition</description>
 
-        <channels>
-            <channel id="hasPendingCommand" typeId="hasPendingCommand-channel"/>
-            <channel id="offline" typeId="offline-channel"/>
-            <channel id="power" typeId="power-channel"/>
-            <channel id="operationMode" typeId="operationMode-channel"/>
-            <channel id="setTemperature" typeId="setTemperature-channel"/>
-            <channel id="fanSpeed" typeId="fanSpeed-channel"/>
-            <channel id="vaneHorizontal" typeId="vaneHorizontal-channel"/>
-            <channel id="vaneVertical" typeId="vaneVertical-channel"/>
-            <channel id="roomTemperature" typeId="roomTemperature-channel"/>
-            <channel id="lastCommunication" typeId="lastCommunication-channel"/>
-            <channel id="nextCommunication" typeId="nextCommunication-channel"/>
-        </channels>
+		<channels>
+			<channel id="hasPendingCommand" typeId="hasPendingCommand-channel"/>
+			<channel id="offline" typeId="offline-channel"/>
+			<channel id="power" typeId="power-channel"/>
+			<channel id="operationMode" typeId="operationMode-channel"/>
+			<channel id="setTemperature" typeId="setTemperature-channel"/>
+			<channel id="fanSpeed" typeId="fanSpeed-channel"/>
+			<channel id="vaneHorizontal" typeId="vaneHorizontal-channel"/>
+			<channel id="vaneVertical" typeId="vaneVertical-channel"/>
+			<channel id="roomTemperature" typeId="roomTemperature-channel"/>
+			<channel id="lastCommunication" typeId="lastCommunication-channel"/>
+			<channel id="nextCommunication" typeId="nextCommunication-channel"/>
+		</channels>
 
-        <config-description>
-            <parameter name="partitionID" type="integer" required="true">
-                <label>Partition ID</label>
-                <description>Risco Partition</description>
-            </parameter>
-            
-            <parameter name="pollingInterval" type="integer" required="true">
-                <label>Polling Interval</label>
-                <description>Time interval how often poll data from RiscoCloud</description>
-                <default>60</default>
-            </parameter>
-        </config-description>
-    </thing-type>
+		<config-description>
+			<parameter name="partitionID" type="integer" required="true">
+				<label>Partition ID</label>
+				<description>Risco Partition</description>
+			</parameter>
+
+			<parameter name="pollingInterval" type="integer" required="true">
+				<label>Polling Interval</label>
+				<description>Time interval how often poll data from RiscoCloud</description>
+				<default>60</default>
+			</parameter>
+		</config-description>
+	</thing-type>
 
 </thing:thing-descriptions>
