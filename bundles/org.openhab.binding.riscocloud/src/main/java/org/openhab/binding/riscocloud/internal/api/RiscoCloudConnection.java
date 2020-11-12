@@ -22,10 +22,10 @@ import java.util.Properties;
 
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse;
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse.Site;
-import org.openhab.binding.riscocloud.internal.api.json.CpStateResponse;
-import org.openhab.binding.riscocloud.internal.api.json.CpStateResponse.Partition;
 import org.openhab.binding.riscocloud.internal.api.json.Login;
 import org.openhab.binding.riscocloud.internal.api.json.SiteLoginResponse;
+import org.openhab.binding.riscocloud.internal.api.json.cpstate.CpStateResponse;
+import org.openhab.binding.riscocloud.internal.api.json.cpstate.DevCollection;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.io.net.http.HttpUtil;
@@ -64,7 +64,7 @@ public class RiscoCloudConnection {
     private String accessToken;
     private String sessionId;
     private Integer siteId;
-    private List<Partition> partitionsList;
+    private List<DevCollection> devCollectionList;
 
     public void login(String username, String password, String pinCode, String languageId)
             throws RiscoCloudCommException, RiscoCloudLoginException {
@@ -156,7 +156,7 @@ public class RiscoCloudConnection {
         }
     }
 
-    public CpStateResponse.State fetchCpState() throws RiscoCloudCommException {
+    public CpStateResponse fetchCpState() throws RiscoCloudCommException {
 
         try {
             JsonObject jsonCpState = new JsonObject();
@@ -168,9 +168,9 @@ public class RiscoCloudConnection {
                     "application/json", TIMEOUT_MILLISECONDS);
             logger.debug("Get ControlPanel State response: {}", cpStateResponse);
 
-            CpStateResponse.State cpStateResp = gson.fromJson(cpStateResponse, CpStateResponse.State.class);
+            CpStateResponse cpStateResp = gson.fromJson(cpStateResponse, CpStateResponse.class);
 
-            partitionsList = cpStateResp.getStatus().getPartitions();
+            devCollectionList = cpStateResp.getResponse().getState().getStatus().getDevCollection();
             return cpStateResp;
 
         } catch (IOException | JsonSyntaxException e) {
@@ -179,8 +179,8 @@ public class RiscoCloudConnection {
         }
     }
 
-    public List<Partition> getPartitionsList() {
-        return partitionsList;
+    public List<DevCollection> getDevCollectionList() {
+        return devCollectionList;
     }
 
     // public List<Device> fetchDeviceList() throws RiscoCloudCommException {

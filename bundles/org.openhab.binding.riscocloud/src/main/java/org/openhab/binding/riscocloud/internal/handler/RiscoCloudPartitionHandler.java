@@ -66,7 +66,7 @@ public class RiscoCloudPartitionHandler extends BaseThingHandler {
         }
 
         config = getConfigAs(PartitionConfig.class);
-        logger.debug("A.C. device config: {}", config);
+        logger.debug("Partition config: {}", config);
 
         initializeBridge(bridge.getHandler(), bridge.getStatus());
     }

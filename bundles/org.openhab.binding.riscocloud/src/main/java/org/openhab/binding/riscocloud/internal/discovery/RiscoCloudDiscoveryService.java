@@ -12,6 +12,9 @@
  */
 package org.openhab.binding.riscocloud.internal.discovery;
 
+import static org.openhab.binding.riscocloud.internal.RiscoCloudBindingConstants.THING_TYPE_PARTITION;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -19,12 +22,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.riscocloud.internal.RiscoCloudBindingConstants;
-import org.openhab.binding.riscocloud.internal.api.json.CpStateResponse.Partition;
+import org.openhab.binding.riscocloud.internal.api.json.cpstate.DevCollection;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.binding.riscocloud.internal.handler.RiscoCloudAccountHandler;
 import org.openhab.core.config.discovery.AbstractDiscoveryService;
+import org.openhab.core.config.discovery.DiscoveryResultBuilder;
 import org.openhab.core.config.discovery.DiscoveryService;
+import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.ThingHandler;
 import org.openhab.core.thing.binding.ThingHandlerService;
@@ -99,12 +104,37 @@ public class RiscoCloudDiscoveryService extends AbstractDiscoveryService
 
         if (riscoCloudHandler != null) {
             try {
-                List<Partition> partitionsList = riscoCloudHandler.getPartitionsList();
-                if (partitionsList == null) {
+                List<DevCollection> devCollectionList = riscoCloudHandler.getDevCollectionList();
+                if (devCollectionList == null) {
                     logger.debug("No devices found");
                 } else {
                     ThingUID bridgeUID = riscoCloudHandler.getThing().getUID();
-                    logger.debug("bridge check");
+
+                    devCollectionList.forEach(devColl -> {
+
+                        // partition type ? Guessing it...
+                        if (devColl.getDevType() == 21) {
+                            devColl.getDevList().forEach(partition -> {
+
+                                String partID = "P" + (partition.getNum() + 1);
+                                ThingTypeUID partitionThingTypeUid = THING_TYPE_PARTITION;
+                                ThingUID partitionThing = new ThingUID(partitionThingTypeUid,
+                                        riscoCloudHandler.getThing().getUID(), partID);
+                                Map<String, Object> partitionProperties = new HashMap<>();
+                                partitionProperties.put("partitionID", partID);
+
+                                String partLabel = partition.getDesc();
+                                logger.debug("Found partition: {} : {}", partLabel, partitionProperties);
+
+                                thingDiscovered(DiscoveryResultBuilder.create(partitionThing).withLabel(partLabel)
+                                        .withProperties(partitionProperties).withRepresentationProperty("partitionID")
+                                        .withBridge(bridgeUID).build());
+
+                            });
+
+                        }
+
+                    });
                 }
                 //
                 // if (1 == 1) {

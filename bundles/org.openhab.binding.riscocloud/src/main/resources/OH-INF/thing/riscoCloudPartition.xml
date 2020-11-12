@@ -25,6 +25,15 @@
 			<channel id="nextCommunication" typeId="nextCommunication-channel"/>
 		</channels>
 
+        
+        <properties>
+            <property name="vendor">Risco</property>
+            <property name="deviceType">Partition</property>
+        </properties>
+        
+        
+        <representation-property>partitionID</representation-property>
+        
 		<config-description>
 			<parameter name="partitionID" type="integer" required="true">
 				<label>Partition ID</label>
