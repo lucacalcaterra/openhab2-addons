@@ -116,12 +116,12 @@ public class RiscoCloudDiscoveryService extends AbstractDiscoveryService
                         if (devColl.getDevType() == 21) {
                             devColl.getDevList().forEach(partition -> {
 
-                                String partID = "P" + (partition.getNum() + 1);
+                                Integer partID = partition.getNum() + 1;
                                 ThingTypeUID partitionThingTypeUid = THING_TYPE_PARTITION;
                                 ThingUID partitionThing = new ThingUID(partitionThingTypeUid,
-                                        riscoCloudHandler.getThing().getUID(), partID);
+                                        riscoCloudHandler.getThing().getUID(), partID.toString());
                                 Map<String, Object> partitionProperties = new HashMap<>();
-                                partitionProperties.put("partitionID", partID);
+                                partitionProperties.put("partitionID", partID.toString());
 
                                 String partLabel = partition.getDesc();
                                 logger.debug("Found partition: {} : {}", partLabel, partitionProperties);
@@ -136,46 +136,11 @@ public class RiscoCloudDiscoveryService extends AbstractDiscoveryService
 
                     });
                 }
-                //
-                // if (1 == 1) {
-                // // if (deviceList == null) {
-                // logger.debug("No devices found");
-                // } else {
-                // ThingUID bridgeUID = riscoCloudHandler.getThing().getUID();
-                //
-                // // deviceList.forEach(device -> {
-                // // ThingTypeUID thingTypeUid = null;
-                // // if (device.getType() == 0) {
-                // // thingTypeUid = THING_TYPE_ACDEVICE;
-                // // } else if (device.getType() == 1) {
-                // // thingTypeUid = THING_TYPE_HEATPUMPDEVICE;
-                // // } else {
-                // // logger.debug("Unsupported device found: name {} : type: {}", device.getDeviceName(),
-                // // device.getType());
-                // // return;
-                // // }
-                // // ThingUID deviceThing = new ThingUID(thingTypeUid, riscoCloudHandler.getThing().getUID(),
-                // // device.getDeviceID().toString());
-                //
-                // // Map<String, Object> deviceProperties = new HashMap<>();
-                // // deviceProperties.put("deviceID", device.getDeviceID().toString());
-                // // deviceProperties.put("serialNumber", device.getSerialNumber().toString());
-                // // deviceProperties.put("macAddress", device.getMacAddress().toString());
-                // // deviceProperties.put("deviceName", device.getDeviceName().toString());
-                // // deviceProperties.put("buildingID", device.getBuildingID().toString());
-                //
-                // // String label = createLabel(device);
-                // // logger.debug("Found device: {} : {}", label, deviceProperties);
-                //
-                // // thingDiscovered(DiscoveryResultBuilder.create(deviceThing).withLabel(label)
-                // // .withProperties(deviceProperties)
-                // // .withRepresentationProperty(device.getDeviceID().toString()).withBridge(bridgeUID)
-                // // .build());
-                // // });
+
             } catch (RiscoCloudLoginException e) {
-                logger.debug("Login error occurred during device list fetch, reason {}. ", e.getMessage(), e);
+                logger.debug("Login error occurred during partition list fetch, reason {}. ", e.getMessage(), e);
             } catch (RiscoCloudCommException e) {
-                logger.debug("Error occurred during device list fetch, reason {}. ", e.getMessage(), e);
+                logger.debug("Error occurred during partition list fetch, reason {}. ", e.getMessage(), e);
             }
         }
     }
