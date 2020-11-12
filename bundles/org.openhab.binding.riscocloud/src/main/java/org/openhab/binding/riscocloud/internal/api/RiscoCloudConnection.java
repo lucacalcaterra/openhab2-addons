@@ -26,6 +26,7 @@ import org.openhab.binding.riscocloud.internal.api.json.Login;
 import org.openhab.binding.riscocloud.internal.api.json.SiteLoginResponse;
 import org.openhab.binding.riscocloud.internal.api.json.cpstate.CpStateResponse;
 import org.openhab.binding.riscocloud.internal.api.json.cpstate.DevCollection;
+import org.openhab.binding.riscocloud.internal.api.json.cpstate.State;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.io.net.http.HttpUtil;
@@ -65,6 +66,7 @@ public class RiscoCloudConnection {
     private String sessionId;
     private Integer siteId;
     private List<DevCollection> devCollectionList;
+    private State cpState;
 
     public void login(String username, String password, String pinCode, String languageId)
             throws RiscoCloudCommException, RiscoCloudLoginException {
@@ -170,6 +172,8 @@ public class RiscoCloudConnection {
 
             CpStateResponse cpStateResp = gson.fromJson(cpStateResponse, CpStateResponse.class);
 
+            cpState = cpStateResp.getResponse().getState();
+
             devCollectionList = cpStateResp.getResponse().getState().getStatus().getDevCollection();
             return cpStateResp;
 
@@ -181,6 +185,10 @@ public class RiscoCloudConnection {
 
     public List<DevCollection> getDevCollectionList() {
         return devCollectionList;
+    }
+
+    public State getCpState() {
+        return this.cpState;
     }
 
     // public List<Device> fetchDeviceList() throws RiscoCloudCommException {

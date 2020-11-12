@@ -15,7 +15,10 @@ package org.openhab.binding.riscocloud.internal.handler;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import org.openhab.binding.riscocloud.internal.api.json.cpstate.State;
 import org.openhab.binding.riscocloud.internal.config.PartitionConfig;
+import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
+import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
@@ -212,22 +215,27 @@ public class RiscoCloudPartitionHandler extends BaseThingHandler {
     }
 
     private void getDeviceDataAndUpdateChannels() {
-        // if (riscoCloudHandler.isConnected()) {
-        // logger.debug("Update device '{}' channels", getThing().getThingTypeUID());
-        // try {
-        // DeviceStatus newDeviceStatus = riscoCloudHandler.fetchDeviceStatus(config.deviceID,
-        // Optional.ofNullable(config.buildingID));
-        // updateChannels(newDeviceStatus);
-        // } catch (RiscoCloudLoginException e) {
-        // logger.debug("Login error occurred during device '{}' polling, reason {}. ",
-        // getThing().getThingTypeUID(), e.getMessage(), e);
-        // } catch (RiscoCloudCommException e) {
-        // logger.debug("Error occurred during device '{}' polling, reason {}. ", getThing().getThingTypeUID(),
-        // e.getMessage(), e);
-        // }
-        // } else {
-        // logger.debug("Connection to RiscoCloud is not open, skipping periodic update");
-        // }
+        if (riscoCloudHandler.isConnected()) {
+            logger.debug("Update device '{}' channels", getThing().getThingTypeUID());
+            try {
+                State state = riscoCloudHandler.getCpState();
+                logger.debug("status");
+                // try {
+                // CpSt cpState = riscoCloudHandler.fetchDeviceStatus(config.deviceID,
+                // Optional.ofNullable(config.buildingID));
+                // updateChannels(newDeviceStatus);
+            } catch (RiscoCloudLoginException e) {
+                logger.debug("Login error occurred during device '{}' polling, reason {}. ",
+                        getThing().getThingTypeUID(), e.getMessage(), e);
+            } catch (RiscoCloudCommException e) {
+                logger.debug("Error occurred during device '{}' polling, reason {}. ", getThing().getThingTypeUID(),
+                        e.getMessage(), e);
+
+            }
+        } else {
+            logger.debug("Connection to RiscoCloud is not open, skipping periodic update");
+        }
+
     }
 
     private synchronized void updateChannels(/* DeviceStatus newDeviceStatus */) {

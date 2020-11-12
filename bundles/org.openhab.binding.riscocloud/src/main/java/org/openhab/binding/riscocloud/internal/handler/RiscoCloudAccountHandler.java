@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import org.openhab.binding.riscocloud.internal.api.RiscoCloudConnection;
 import org.openhab.binding.riscocloud.internal.api.json.AllSitesResponse.Site;
 import org.openhab.binding.riscocloud.internal.api.json.cpstate.DevCollection;
+import org.openhab.binding.riscocloud.internal.api.json.cpstate.State;
 import org.openhab.binding.riscocloud.internal.config.AccountConfig;
 import org.openhab.binding.riscocloud.internal.discovery.RiscoCloudDiscoveryService;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
@@ -98,6 +99,9 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
     // connection.fetchCpState();
     // return connection.getPartitionsList();
     // }
+    public State getCpState() throws RiscoCloudCommException, RiscoCloudLoginException {
+        return connection.getCpState();
+    }
 
     public List<DevCollection> getDevCollectionList() throws RiscoCloudCommException, RiscoCloudLoginException {
         // TODO: checks ?
