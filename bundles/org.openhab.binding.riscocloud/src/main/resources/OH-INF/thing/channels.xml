@@ -5,9 +5,16 @@
 
 	<!-- Common channels -->
 	<channel-type id="armedState-channel">
-		<item-type>Switch</item-type>
-		<label>Arm Status</label>
-		<description>Arm Status of Partition</description>
+		<item-type>String</item-type>
+        <label>Arm Status</label>
+        <description>Arm Status of Partition</description>
+        <state readOnly="true">
+            <options>
+                <option value="1">Disarmed</option>
+                <option value="2">Armed Home</option>
+                <option value="3">Armed Away</option>                
+            </options>
+        </state>
 	</channel-type>
 	
 	<channel-type id="alarmState-channel">

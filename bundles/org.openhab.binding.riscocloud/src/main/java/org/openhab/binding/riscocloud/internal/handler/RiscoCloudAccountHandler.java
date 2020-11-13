@@ -100,6 +100,8 @@ public class RiscoCloudAccountHandler extends BaseBridgeHandler {
     // return connection.getPartitionsList();
     // }
     public State getCpState() throws RiscoCloudCommException, RiscoCloudLoginException {
+        connectIfNotConnected();
+        connection.fetchCpState();
         return connection.getCpState();
     }
 

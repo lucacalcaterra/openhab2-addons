@@ -12,14 +12,18 @@
  */
 package org.openhab.binding.riscocloud.internal.handler;
 
+import static org.openhab.binding.riscocloud.internal.RiscoCloudBindingConstants.CHANNEL_ARMEDSTATE;
+
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.openhab.binding.riscocloud.internal.api.json.cpstate.State;
+import org.openhab.binding.riscocloud.internal.api.json.cpstate.Partition;
 import org.openhab.binding.riscocloud.internal.config.PartitionConfig;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudCommException;
 import org.openhab.binding.riscocloud.internal.exceptions.RiscoCloudLoginException;
+import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.Bridge;
+import org.openhab.core.thing.Channel;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
@@ -51,7 +55,7 @@ public class RiscoCloudPartitionHandler extends BaseThingHandler {
     private final Logger logger = LoggerFactory.getLogger(RiscoCloudPartitionHandler.class);
     private PartitionConfig config;
     private RiscoCloudAccountHandler riscoCloudHandler;
-    // private DeviceStatus deviceStatus;
+    private Partition partitionStatus;
     private ScheduledFuture<?> refreshTask;
 
     public RiscoCloudPartitionHandler(Thing thing) {
@@ -218,12 +222,12 @@ public class RiscoCloudPartitionHandler extends BaseThingHandler {
         if (riscoCloudHandler.isConnected()) {
             logger.debug("Update device '{}' channels", getThing().getThingTypeUID());
             try {
-                State state = riscoCloudHandler.getCpState();
-                logger.debug("status");
-                // try {
-                // CpSt cpState = riscoCloudHandler.fetchDeviceStatus(config.deviceID,
+                Partition partition = riscoCloudHandler.getCpState().getStatus().getPartitions()
+                        .get(config.partitionID - 1);
+
+                // logger.debug("status");
                 // Optional.ofNullable(config.buildingID));
-                // updateChannels(newDeviceStatus);
+                updateChannels(partition);
             } catch (RiscoCloudLoginException e) {
                 logger.debug("Login error occurred during device '{}' polling, reason {}. ",
                         getThing().getThingTypeUID(), e.getMessage(), e);
@@ -238,14 +242,20 @@ public class RiscoCloudPartitionHandler extends BaseThingHandler {
 
     }
 
-    private synchronized void updateChannels(/* DeviceStatus newDeviceStatus */) {
-        // deviceStatus = newDeviceStatus;
-        // for (Channel channel : getThing().getChannels()) {
-        // updateChannels(channel.getUID().getId(), deviceStatus);
-        // }
+    private synchronized void updateChannels(Partition newPartitionStatus) {
+
+        partitionStatus = newPartitionStatus;
+        for (Channel channel : getThing().getChannels()) {
+            updateChannels(channel.getUID().getId(), partitionStatus);
+        }
     }
 
-    private void updateChannels(String channelId /* , DeviceStatus deviceStatus */) {
+    private void updateChannels(String channelId, Partition partitionStatus) {
+        switch (channelId) {
+            case CHANNEL_ARMEDSTATE:
+                updateState(CHANNEL_ARMEDSTATE, new StringType(partitionStatus.getArmedState().toString()));
+                break;
+        }
         // switch (channelId) {
         // case CHANNEL_POWER:
         // updateState(CHANNEL_POWER, deviceStatus.getPower() ? OnOffType.ON : OnOffType.OFF);
