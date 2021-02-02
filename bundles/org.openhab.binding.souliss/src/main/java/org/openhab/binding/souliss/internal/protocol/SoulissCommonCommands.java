@@ -355,7 +355,7 @@ public class SoulissCommonCommands {
     /**
      * Build BROADCAST PING Frame
      */
-    public final void sendBroadcastGatewayDiscover(DatagramSocket datagramSocket) {
+    public final void sendBroadcastGatewayDiscover(@Nullable DatagramSocket datagramSocket) {
         ArrayList<Byte> macacoFrame = new ArrayList<>();
         macacoFrame.add(SoulissBindingUDPConstants.SOULISS_UDP_FUNCTION_DISCOVER_GW_NODE_BCAST_REQ);
 
