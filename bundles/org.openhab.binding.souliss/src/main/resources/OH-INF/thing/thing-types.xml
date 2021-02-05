@@ -372,6 +372,14 @@
 			<channel id="lastStatusStored" typeId="lastStatusStored"/>
 			<channel id="healty" typeId="healty"/>
 		</channels>
+		<config-description>
+            <parameter name="secureSend" type="boolean">
+                <label>Secure Send</label>
+                <description></description>
+                <required>false</required>
+                <default>true</default>
+            </parameter>
+        </config-description>
 	</thing-type>
 
 	<thing-type id="t41">
