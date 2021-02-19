@@ -22,7 +22,7 @@
 				<default>230</default>
 			</parameter>
 			<parameter name="PREFERRED_LOCAL_PORT_NUMBER" type="integer" required="true">
-				<label>Preferred local port number</label>
+				<label>Preferred Local Port Number</label>
 				<description>Default port is 0. It means that it is random.
 				</description>
 				<default>0</default>
