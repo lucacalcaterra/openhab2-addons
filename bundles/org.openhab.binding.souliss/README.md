@@ -1,5 +1,3 @@
-For updates go to official repository at [https://github.com/souliss/bindingopenhab2](https://github.com/souliss/bindingopenhab2)
-
 # Souliss Binding
 
 [Souliss](http://www.souliss.net/) is a networking framework for Arduino and compatibles boards, and is designed to let you easily build a smart home that is distributed over multiple boards via Ethernet, WiFi, wireless point-to-point and RS485 bus. 
