@@ -16,7 +16,7 @@
 				</description>
 			</parameter>
 			<parameter name="GATEWAY_PORT_NUMBER" type="integer" required="true">
-				<label>Gateway port</label>
+				<label>Gateway Port</label>
 				<description>Default is 230 UDP.
 				</description>
 				<default>230</default>
