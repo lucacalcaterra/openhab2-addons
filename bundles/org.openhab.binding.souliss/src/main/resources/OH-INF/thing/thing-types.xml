@@ -91,7 +91,7 @@
 		<description>Simple Light</description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
+			<channel id="onOff" typeId="onoff"/>
 			<channel id="sleep" typeId="sleep"/>
 			<channel id="lastStatusStored" typeId="lastStatusStored"/>
 			<channel id="healthy" typeId="healthy"/>
@@ -121,7 +121,7 @@
 		<label>T12</label>
 		<description>Simple Light with Auto Mode</description>
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
+			<channel id="onOff" typeId="onoff"/>
 			<channel id="automode" typeId="automode"/>
 			<channel id="lastStatusStored" typeId="lastStatusStored"/>
 			<channel id="healthy" typeId="healthy"/>
@@ -178,7 +178,7 @@
 		<description>RGB LED Strip</description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
+			<channel id="onOff" typeId="onoff"/>
 			<channel id="whitemode" typeId="whitemode"/>
 			<channel id="roller_brightness" typeId="roller_brightness"/>
 			<channel id="dimmer_brightness" typeId="dimmer_brightness"/>
@@ -213,7 +213,7 @@
 		<description>Simple Light with feedback </description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
+			<channel id="onOff" typeId="onoff"/>
 			<channel id="lastStatusStored" typeId="lastStatusStored"/>
 			<channel id="healthy" typeId="healthy"/>
 		</channels>
@@ -242,7 +242,7 @@
 		<description>Single Color LED Strip</description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
+			<channel id="onOff" typeId="onoff"/>
 			<channel id="roller_brightness" typeId="roller_brightness"/>
 			<channel id="dimmer_brightness" typeId="dimmer_brightness"/>
 			<channel id="sleep" typeId="sleep"/>
