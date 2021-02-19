@@ -26,9 +26,9 @@ import org.slf4j.LoggerFactory;
  */
 
 @NonNullByDefault
-public class SoulissGatewayJobHealty extends Thread {
+public class SoulissGatewayJobHealthy extends Thread {
 
-    private Logger logger = LoggerFactory.getLogger(SoulissGatewayJobHealty.class);
+    private Logger logger = LoggerFactory.getLogger(SoulissGatewayJobHealthy.class);
     private String ipAddressOnLAN;
     private byte userIndex;
     private byte nodeIndex;
@@ -39,7 +39,7 @@ public class SoulissGatewayJobHealty extends Thread {
     @Nullable
     private SoulissGatewayHandler gw;
 
-    public SoulissGatewayJobHealty(Bridge bridge) {
+    public SoulissGatewayJobHealthy(Bridge bridge) {
         gw = (SoulissGatewayHandler) bridge.getHandler();
         ipAddressOnLAN = gw.ipAddressOnLAN;
         userIndex = gw.userIndex;

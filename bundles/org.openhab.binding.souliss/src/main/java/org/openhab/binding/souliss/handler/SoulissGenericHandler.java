@@ -189,8 +189,8 @@ public abstract class SoulissGenericHandler extends BaseThingHandler implements 
         return SoulissBindingNetworkParameters.getDatagramSocket();
     }
 
-    public void setHealty(byte shHealty) {
-        this.updateState(SoulissBindingConstants.HEALTY_CHANNEL, new DecimalType(shHealty & 0xFF));
+    public void setHealthy(byte shHealthy) {
+        this.updateState(SoulissBindingConstants.HEALTHY_CHANNEL, new DecimalType(shHealthy & 0xFF));
     }
 
     public void setLastStatusStored() {

@@ -72,7 +72,7 @@ Typicals match directly with openHAB Thing type.
 
 The following matrix lists the capabilities (channels) for each type:
 
-|Thing type / Channel |Switch / onoff | Switch / sleep | DateTime / lastStatusStored | Number / healty |Switch / automode|Contact / stateOnOff|Contact / stateOpenClose|Switch / pulse|Switch / whitemode|Rollershutter / roller_brightness|Dimmer / dimmer_brightness|Color / ledcolor|Switch / one|Switch / two|Switch / three|Switch / four|Switch / five|Switch / six|Switch / seven|Switch / eight|
+|Thing type / Channel |Switch / onoff | Switch / sleep | DateTime / lastStatusStored | Number / healthy |Switch / automode|Contact / stateOnOff|Contact / stateOpenClose|Switch / pulse|Switch / whitemode|Rollershutter / roller_brightness|Dimmer / dimmer_brightness|Color / ledcolor|Switch / one|Switch / two|Switch / three|Switch / four|Switch / five|Switch / six|Switch / seven|Switch / eight|
 |-- |-- | -- | -- | -- |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
 |souliss:t11|x|x|x|x||||
 |souliss:t12|x| |x|x|x||||
@@ -83,7 +83,7 @@ The following matrix lists the capabilities (channels) for each type:
 |souliss:t19|x|x|x|x||||||x|x|
 |souliss:t1A|||x|x|||||||||x|x|x|x|x|x|x|x|
 
-|Thing type / Channel | DateTime / lastStatusStored | Number / healty |Rollershutter / rollershutter|(see down) / rollershutterstate|(see down) / mode|(see down) / fan|Switch / status|Number / setpoint|Switch / setAsMeasured|Switch / measured|Switch / statusAlarm|Switch / onOffAlarm|Switch / rearmAlarm|
+|Thing type / Channel | DateTime / lastStatusStored | Number / healthy |Rollershutter / rollershutter|(see down) / rollershutterstate|(see down) / mode|(see down) / fan|Switch / status|Number / setpoint|Switch / setAsMeasured|Switch / measured|Switch / statusAlarm|Switch / onOffAlarm|Switch / rearmAlarm|
 |-- |-- | --|- | -- | -- |--|--|--|--|--|--|--|--|
 |souliss:t21|x|x||x|
 |souliss:t22|x|x|x|x|
@@ -98,7 +98,7 @@ mode = COOLING_MODE, HEATING_MODE, POWEREDOFF_MODE
 fan = AUTO, HIGH, MEDIUM, LOW, FANOFF
 
 
-|Thing type / Channel| DateTime / lastStatusStored |Number / healty|Number / value|
+|Thing type / Channel| DateTime / lastStatusStored |Number / healthy|Number / value|
 |-- |-- | -- | --|
 |souliss:t51|x|x|x|
 |souliss:t52|x|x|x|
@@ -109,7 +109,7 @@ fan = AUTO, HIGH, MEDIUM, LOW, FANOFF
 |souliss:t57|x|x|x|
 |souliss:t58|x|x|x|
 
-|Thing type / Channel|  DateTime / lastStatusStored |Number / healty|Number / value|
+|Thing type / Channel|  DateTime / lastStatusStored |Number / healthy|Number / value|
 |-- |-- | -- | --|
 |souliss:t61|x|x|x|
 |souliss:t62|x|x|x|
@@ -252,7 +252,7 @@ String	AggiornamentoNodo4	"Agg.Fotovoltaico [%1$td.%1$tm.%1$tY %1$tk:%1$tM:%1$tS
                                   
 Switch divano "Divano" <light> (FamilyRoom, Divano ) ["Switchable"] {autoupdate="false", channel="souliss:t11:105:12-0:onoff"}
 String divano_aggiornamento	"Agg. [%1$td.%1$tm.%1$tY %1$tk:%1$tM:%1$tS]"	<keyring> (FamilyRoom, Divano, Diagnostic)  {channel="souliss:t57:105:12-0:lastStatusStored"}
-String divano_healty	"Salute"	<keyring> (FamilyRoom, Divano, Diagnostic)  {channel="souliss:t57:105:12-0:healty"}
+String divano_healthy	"Salute"	<keyring> (FamilyRoom, Divano, Diagnostic)  {channel="souliss:t57:105:12-0:healthy"}
 
 Number termostatosoggiorno_temperatura  "Temperatura [%.1f °C]" <temperature> (TermostatoSoggiorno) {channel="souliss:t31:105:6-0:measured"}
 Number termostatosoggiorno_umidita "Umidità [%.1f %%]" <temperature>   (TermostatoSoggiorno)       {channel="souliss:t53:105:6-7:value" }
@@ -268,7 +268,7 @@ Switch termostatosoggiorno_fire "Fire" <fire> (TermostatoSoggiorno) {channel="so
 
 Dimmer  TermostatoSoggiorno_displayBright   "Lumin.min. display" (TermostatoSoggiorno)      {channel="souliss:t19:105:6-9" }
 String TermostatoSoggiorno_aggiornamento "Agg.[%1$td.%1$tm.%1$tY %1$tk:%1$tM:%1$tS]" <keyring> (TermostatoSoggiorno, Diagnostic)  {channel="souliss:t31:105:6-0:lastStatusStored"}
-Number TermostatoSoggiorno_healty "Salute" <keyring> (TermostatoSoggiorno, Diagnostic )  {channel="souliss:t31:105:6-0:healty"}
+Number TermostatoSoggiorno_healthy "Salute" <keyring> (TermostatoSoggiorno, Diagnostic )  {channel="souliss:t31:105:6-0:healthy"}
 
 ```
 
@@ -317,7 +317,7 @@ Text label="Termostato soggiorno" icon="temperature" {
             Switch item=termostatosoggiorno_power label="Power On/Off"
             Default item=termostatosoggiorno_fire label="Fire"
 	        Text item=termostatoSoggiorno_aggiornamento label="Aggiornato: [%1$td.%1$tm.%1$tY %1$tk:%1$tM:%1$tS]" icon="icon16x16"
-            Default item=termostatoSoggiorno_healty
+            Default item=termostatoSoggiorno_healthy
 	        Slider item=termostatoSoggiorno_displayBright
 	}		
 }

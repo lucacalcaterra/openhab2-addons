@@ -191,7 +191,7 @@ public final class SoulissBindingConstants {
 
     public static final String LASTMESSAGE_CHANNEL = "lastMessage";
     public static final String LASTSTATUSSTORED_CHANNEL = "lastStatusStored";
-    public static final String HEALTY_CHANNEL = "healty";
+    public static final String HEALTHY_CHANNEL = "healthy";
 
     public static final String T5N_VALUE_CHANNEL = "value";
     public static final String T6N_VALUE_CHANNEL = "value";

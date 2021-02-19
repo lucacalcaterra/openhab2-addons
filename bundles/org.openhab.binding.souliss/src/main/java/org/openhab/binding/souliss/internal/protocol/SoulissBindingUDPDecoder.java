@@ -132,7 +132,7 @@ public class SoulissBindingUDPDecoder {
                 break;
 
             case SoulissBindingUDPConstants.SOULISS_UDP_FUNCTION_HEALTHY_RESP:// Answer
-                // nodes healty
+                // nodes healthy
                 logger.debug("Received functional code: 0x{} - Nodes Healthy", Integer.toHexString(functionalCode));
                 decodeHealthyRequest(lastByteGatewayIP, macacoPck);
                 break;
@@ -378,7 +378,7 @@ public class SoulissBindingUDPDecoder {
                     if (handler != null) {
                         int tgtnode = i - 5;
                         if (((SoulissGenericHandler) handler).getNode() == tgtnode) {
-                            ((SoulissGenericHandler) handler).setHealty((mac.get(i)));
+                            ((SoulissGenericHandler) handler).setHealthy((mac.get(i)));
                         }
                     } else {
                         logger.debug("decode Healthy Request Warning. Thing handler is null");
