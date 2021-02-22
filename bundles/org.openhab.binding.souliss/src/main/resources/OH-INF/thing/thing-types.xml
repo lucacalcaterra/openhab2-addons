@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<thing:thing-descriptions bindingId="souliss"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
-	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+<thing:thing-descriptions bindingId="souliss" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0" xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
 
 	<bridge-type id="gateway">
@@ -10,98 +7,89 @@
 		<description>Represents a Souliss Gateway.</description>
 
 		<config-description>
-			<parameter name="GATEWAY_IP_ADDRESS" type="text" required="true">
+			<parameter name="gatewayIpAddress" type="text" required="true">
 				<label>IP or Host Name</label>
 				<description>Will be resolved by discovery if auto configured
 				</description>
 			</parameter>
-			<parameter name="GATEWAY_PORT_NUMBER" type="integer" required="true">
-				<label>Gateway port</label>
+			<parameter name="gatewayPortNumber" type="integer" required="true">
+				<label>Gateway Port</label>
 				<description>Default is 230 UDP.
 				</description>
 				<default>230</default>
 			</parameter>
-			<parameter name="PREFERRED_LOCAL_PORT_NUMBER" type="integer" required="true">
-				<label>Preferred local port number</label>
+			<parameter name="preferredLocalPortNumber" type="integer" required="true">
+				<label>Local Port Number</label>
 				<description>Default port is 0. It means that it is random.
 				</description>
 				<default>0</default>
-				<advanced>true</advanced>
 			</parameter>
 
-			<parameter name="PING_INTERVAL" type="integer" min="1" max="300">
-				<label>Ping interval</label>
+			<parameter name="pingInterval" type="integer" min="1" max="300">
+				<label>Ping Interval</label>
 				<description>Interval in seconds to check for device presence.</description>
 				<default>30</default>
-				<advanced>true</advanced>
 			</parameter>
-			<parameter name="SUBSCRIBTION_INTERVAL" type="integer" min="1" max="60">
-				<label>Subscription interval</label>
+			<parameter name="subscriptionInterval" type="integer" min="1" max="60">
+				<label>Subscription Interval</label>
 				<description>Interval in minutes to subcribe Souliss Gateway.
 				</description>
 				<default>2</default>
-				<advanced>true</advanced>
 			</parameter>
-			<parameter name="HEALTHY_INTERVAL" type="integer" min="1" max="60">
-				<label>Healthy interval</label>
+			<parameter name="healthyInterval" type="integer" min="1" max="60">
+				<label>Healthy Interval</label>
 				<description>Interval in seconds to send nodes healthy.
 				</description>
 				<default>35</default>
-				<advanced>true</advanced>
 			</parameter>
 
-			<parameter name="SEND_INTERVAL" type="integer" min="5" max="5000">
-				<label>Send interval</label>
+			<parameter name="sendInterval" type="integer" min="5" max="5000">
+				<label>Send Interval</label>
 				<description>Interval in milliseconds to get packet from binding queue and send it to Souliss. First packet is sent
 					immediately.
 				</description>
 				<default>1000</default>
-				<advanced>true</advanced>
 			</parameter>
 
-			<parameter name="TIMEOUT_TO_REQUEUE" type="integer" min="0" max="10000">
-				<label>Interval in milliseconds to requeue packet in queue if not yet executed</label>
-				<description></description>
+			<parameter name="timeoutToRequeue" type="integer" min="0" max="10000">
+				<label>Timeout To Requeue</label>
+				<description>Interval in milliseconds to requeue packet in queue if not yet executed</description>
 				<required>true</required>
 				<default>5000</default>
 			</parameter>
 
-			<parameter name="TIMEOUT_TO_REMOVE_PACKET" type="integer" min="0" max="60000">
-				<label>Interval in milliseconds to remove packet from queue if not yet executed </label>
-				<description></description>
+			<parameter name="timeoutToRemovePacket" type="integer" min="0" max="60000">
+				<label>Timeout To Remove Packet</label>
+				<description>Interval in milliseconds to remove packet from queue if not yet executed </description>
 				<required>true</required>
 				<default>20000</default>
 			</parameter>
 
-			<parameter name="USER_INDEX" type="integer" required="true">
+			<parameter name="userIndex" type="integer" required="true">
 				<label>User Index</label>
-				<description>Generally the default value work good. It must is different from other user interfaces (ex: SoulissApp)
-				</description>
+				<description>User Index</description>
 				<default>70</default>
-				<advanced>true</advanced>
 			</parameter>
-			<parameter name="NODE_INDEX" type="integer" required="true">
+			<parameter name="nodeIndex" type="integer" required="true">
 				<label>Node Index</label>
-				<description>Generally the default value work good. It must is different from other user interfaces (ex: SoulissApp)
-				</description>
+				<description>Node Index</description>
 				<default>120</default>
-				<advanced>true</advanced>
 			</parameter>
 		</config-description>
 	</bridge-type>
 
 	<thing-type id="t11">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T11</label>
 		<description>Simple Light</description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
-			<channel id="sleep" typeId="sleep"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="onOff" typeId="onoff" />
+			<channel id="sleep" typeId="sleep" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 
 		<config-description>
@@ -112,8 +100,8 @@
 				<default>5</default>
 			</parameter>
 			<parameter name="secureSend" type="boolean">
-				<label>Secure Send (conf.parameter: "secureSend")</label>
-				<description></description>
+				<label>Secure Send</label>
+				<description> (conf.parameter: "secureSend") </description>
 				<required>false</required>
 				<default>true</default>
 			</parameter>
@@ -123,15 +111,15 @@
 
 	<thing-type id="t12">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T12</label>
 		<description>Simple Light with Auto Mode</description>
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
-			<channel id="automode" typeId="automode"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="onOff" typeId="onoff" />
+			<channel id="automode" typeId="automode" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 		<config-description>
 			<parameter name="sleep" type="integer" min="1" max="1000">
@@ -151,48 +139,48 @@
 
 	<thing-type id="t13">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T13</label>
 		<description>Digital Input</description>
 
 		<channels>
-			<channel id="stateOnOff" typeId="stateOnOff"/>
-			<channel id="stateOpenClose" typeId="stateOpenClose"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="stateOnOff" typeId="stateOnOff" />
+			<channel id="stateOpenClose" typeId="stateOpenClose" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t14">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T14</label>
 		<description>Pulse Digital Output</description>
 		<channels>
-			<channel id="pulse" typeId="pulse"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="pulse" typeId="pulse" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t16">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T16</label>
 		<description>RGB LED Strip</description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
-			<channel id="whitemode" typeId="whitemode"/>
-			<channel id="roller_brightness" typeId="roller_brightness"/>
-			<channel id="dimmer_brightness" typeId="dimmer_brightness"/>
-			<channel id="ledcolor" typeId="ledcolor"/>
-			<channel id="sleep" typeId="sleep"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="onOff" typeId="onoff" />
+			<channel id="whitemode" typeId="whitemode" />
+			<channel id="rollerBrightness" typeId="rollerBrightness" />
+			<channel id="dimmerBrightness" typeId="dimmerBrightness" />
+			<channel id="ledcolor" typeId="ledcolor" />
+			<channel id="sleep" typeId="sleep" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 
 		<config-description>
@@ -214,15 +202,15 @@
 
 	<thing-type id="t18">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T18</label>
 		<description>Simple Light with feedback </description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="onOff" typeId="onoff" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 		<config-description>
 			<parameter name="sleep" type="integer" min="1" max="1000">
@@ -243,18 +231,18 @@
 
 	<thing-type id="t19">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T19</label>
 		<description>Single Color LED Strip</description>
 
 		<channels>
-			<channel id="onoff" typeId="onoff"/>
-			<channel id="roller_brightness" typeId="roller_brightness"/>
-			<channel id="dimmer_brightness" typeId="dimmer_brightness"/>
-			<channel id="sleep" typeId="sleep"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="onOff" typeId="onoff" />
+			<channel id="rollerBrightness" typeId="rollerBrightness" />
+			<channel id="dimmerBrightness" typeId="dimmerBrightness" />
+			<channel id="sleep" typeId="sleep" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 
 		<config-description>
@@ -268,7 +256,7 @@
 	</thing-type>
 	<thing-type id="t1a">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T1A</label>
 		<description>Digital input pass through</description>
@@ -298,22 +286,22 @@
 			<channel id="eight" typeId="stateOpenClose">
 				<label>8</label>
 			</channel>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t21">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T21</label>
 		<description>Motorized devices with limit switches</description>
 		<channels>
-			<channel id="rollershutter" typeId="rollershutter"/>
-			<channel id="rollershutterstate" typeId="rollershutterstate"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="rollershutter" typeId="rollershutter" />
+			<channel id="rollershutterstate" typeId="rollershutterstate" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 		<config-description>
 			<parameter name="secureSend" type="boolean">
@@ -327,15 +315,15 @@
 
 	<thing-type id="t22">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T22</label>
 		<description>Motorized devices with limit switches and middle position</description>
 		<channels>
-			<channel id="rollershutter" typeId="rollershutter"/>
-			<channel id="rollershutterstate" typeId="rollershutterstate"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="rollershutter" typeId="rollershutter" />
+			<channel id="rollershutterstate" typeId="rollershutterstate" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 		<config-description>
 			<parameter name="secureSend" type="boolean">
@@ -349,14 +337,14 @@
 
 	<thing-type id="t31">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T31</label>
 		<description>Temperature control with cooling and heating mode</description>
 		<channels>
-			<channel id="fan" typeId="fan-channel"/>
+			<channel id="fan" typeId="fan-channel" />
 			<channel id="mode" typeId="mode-channel">
-				<label>Mode: heating/cooling</label>
+				<label>Mode</label>
 			</channel>
 			<channel id="system" typeId="onoff">
 				<label>System</label>
@@ -364,33 +352,25 @@
 			<channel id="fire" typeId="buttonReadOnly">
 				<label>Fire</label>
 			</channel>
-			<channel id="setpoint" typeId="float6n"/>
+			<channel id="setpoint" typeId="float6n" />
 			<channel id="setAsMeasured" typeId="button">
-				<label>As measured</label>
+				<label>As Measured</label>
 			</channel>
-			<channel id="measured" typeId="temperature"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="measured" typeId="temperature" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
-		<config-description>
-            <parameter name="secureSend" type="boolean">
-                <label>Secure Send</label>
-                <description></description>
-                <required>false</required>
-                <default>true</default>
-            </parameter>
-        </config-description>
 	</thing-type>
 
 	<thing-type id="t41">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T41</label>
 		<description>Anti-theft integration (Main)</description>
 		<channels>
 			<channel id="statusAlarm" typeId="buttonReadOnly">
-				<label>Alarm status</label>
+				<label>Alarm Status</label>
 			</channel>
 			<channel id="onOffAlarm" typeId="onoff">
 				<label>Alarm ON/OFF</label>
@@ -398,8 +378,8 @@
 			<channel id="rearmAlarm" typeId="button">
 				<label>Rearm</label>
 			</channel>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 
 		</channels>
 		<config-description>
@@ -414,7 +394,7 @@
 
 	<thing-type id="t42">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T42</label>
 		<description>Anti-theft integration (Peer)</description>
@@ -428,8 +408,8 @@
 			<channel id="rearmAlarm" typeId="button">
 				<label>Rearm</label>
 			</channel>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 		<config-description>
 			<parameter name="secureSend" type="boolean">
@@ -444,209 +424,209 @@
 
 	<thing-type id="t51">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T51</label>
 		<description>Floating Point Input</description>
 
 		<channels>
-			<channel id="value" typeId="float"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="float" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t52">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T52</label>
 		<description>Temperature measure (-20, +50) °C</description>
 
 		<channels>
-			<channel id="value" typeId="temperature"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="temperature" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t53">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T53</label>
 		<description>Humidity measure (0, 100) %</description>
 		<channels>
-			<channel id="value" typeId="humidity"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="humidity" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t54">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T54</label>
 		<description>Light Sensor (0, 40) kLux</description>
 		<channels>
-			<channel id="value" typeId="lux"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="lux" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t55">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T55</label>
 		<description>Voltage (0, 400) V</description>
 		<channels>
-			<channel id="value" typeId="voltage"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="voltage" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 
 	</thing-type>
 
 	<thing-type id="t56">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T56</label>
 		<description>Current (0, 25) A</description>
 		<channels>
-			<channel id="value" typeId="ampere"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="ampere" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t57">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T57</label>
 		<description>Power (0, 6500) W</description>
 		<channels>
-			<channel id="value" typeId="power"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="power" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t58">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T58</label>
 		<description>Pressure measure (0, 1500) hPa</description>
 		<channels>
-			<channel id="value" typeId="power"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="power" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t61">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T61</label>
 		<description>Analog setpoint</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t62">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T62</label>
 		<description>Temperature measure (-20, +50) °C</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t63">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T63</label>
 		<description>Humidity measure (0, 100) %</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t64">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T64</label>
 		<description>Light Sensor (0, 40) kLux</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t65">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T65</label>
 		<description>Voltage (0, 400) V</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t66">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T66</label>
 		<description>Current (0, 25) A</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t67">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T67</label>
 		<description>Power (0, 6500) W</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
 	<thing-type id="t68">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="gateway"/>
+			<bridge-type-ref id="gateway" />
 		</supported-bridge-type-refs>
 		<label>T68</label>
 		<description>Pressure measure (0, 1500) hPa</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
-			<channel id="healty" typeId="healty"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
+			<channel id="healthy" typeId="healthy" />
 		</channels>
 	</thing-type>
 
@@ -655,12 +635,11 @@
 		<description>Look at: Souliss Wiki, Peer 2 Peer Communication. That are messages published in broadcast from souliss
 			nodes in channels defined by two value: number and variant.</description>
 		<channels>
-			<channel id="value" typeId="float6n"/>
-			<channel id="lastStatusStored" typeId="lastStatusStored"/>
+			<channel id="value" typeId="float6n" />
+			<channel id="lastStatusStored" typeId="lastStatusStored" />
 		</channels>
 
 	</thing-type>
-
 
 
 	<channel-type id="fan-channel">
@@ -700,9 +679,8 @@
 		<label>Button</label>
 		<description>Button to trigger something</description>
 		<category>Switch</category>
-		<state readOnly="true"/>
+		<state readOnly="true" />
 	</channel-type>
-
 
 
 	<channel-type id="pulse">
@@ -720,24 +698,9 @@
 
 	<channel-type id="sleep">
 		<item-type>Switch</item-type>
-		<label>Set timer</label>
+		<label>Set Timer</label>
 		<description>The output will be timed for nCYCLES of the Node associated timer</description>
-
 	</channel-type>
-
-
-	<!-- <channel-type id="trigger-channel">
-		<kind>trigger</kind>
-		<label>Trigger Channel</label>
-		<event>
-		<options>
-		<option value="PRESSED">pressed</option>
-		<option value="RELEASED">released</option>
-		<option value="DOUBLE_PRESSED">double pressed</option>
-		</options>
-		</event>
-		</channel-type> -->
-
 
 	<channel-type id="automode">
 		<item-type>Switch</item-type>
@@ -749,16 +712,15 @@
 		<item-type>Contact</item-type>
 		<label>State On/Off</label>
 		<description>Light on/off</description>
-		<state readOnly="true"/>
+		<state readOnly="true" />
 	</channel-type>
-
 
 
 	<channel-type id="stateOpenClose">
 		<item-type>Contact</item-type>
 		<label>State Open/Closed</label>
 		<description>Contact Open/Closed</description>
-		<state readOnly="true"/>
+		<state readOnly="true" />
 	</channel-type>
 
 	<channel-type id="rollershutter">
@@ -766,7 +728,7 @@
 		<label>Rollershutter</label>
 		<description>Rollershutter Up/Down</description>
 		<category>Blinds</category>
-		<state min="0" max="100" pattern="%d %%"/>
+		<state min="0" max="100" pattern="%d %%" />
 	</channel-type>
 
 	<channel-type id="rollershutterstate">
@@ -792,7 +754,7 @@
 		<label>Last Message</label>
 		<description>Last Message emitted by the module</description>
 		<category>QualityOfService</category>
-		<state readOnly="true"/>
+		<state readOnly="true" />
 	</channel-type>
 
 	<channel-type id="lastStatusStored" advanced="false">
@@ -800,18 +762,17 @@
 		<label>Last Status Stored</label>
 		<description>Last Status Store</description>
 		<category>QualityOfService</category>
-		<state readOnly="true"/>
+		<state readOnly="true" />
 	</channel-type>
 
-	<channel-type id="healty">
+	<channel-type id="healthy">
 		<item-type>Number</item-type>
-		<label>Healty</label>
-		<description>Souliss Healty</description>
+		<label>Healthy</label>
+		<description>Souliss Healthy</description>
 		<tags>
 			<tag>QualityOfService</tag>
 		</tags>
-		<state readOnly="true" pattern="%.0f">
-		</state>
+		<state readOnly="true" pattern="%.0f"></state>
 	</channel-type>
 
 	<channel-type id="float">
@@ -821,8 +782,7 @@
 		<tags>
 			<tag>sensors</tag>
 		</tags>
-		<state readOnly="true" pattern="%.1f ">
-		</state>
+		<state readOnly="true" pattern="%.1f "></state>
 	</channel-type>
 
 	<channel-type id="float6n">
@@ -830,8 +790,7 @@
 		<label>Setpoint</label>
 		<description>Floating Point Input</description>
 		<category>Temperature</category>
-		<state pattern="%.1f">
-		</state>
+		<state pattern="%.1f"></state>
 	</channel-type>
 
 	<channel-type id="humidity">
@@ -842,8 +801,7 @@
 		<tags>
 			<tag>sensors</tag>
 		</tags>
-		<state readOnly="true" pattern="%d %%">
-		</state>
+		<state readOnly="true" pattern="%d %%"></state>
 	</channel-type>
 
 
@@ -856,8 +814,7 @@
 			<tag>sensors</tag>
 		</tags>
 
-		<state readOnly="true" pattern="%.1f °C">
-		</state>
+		<state readOnly="true" pattern="%.1f °C"></state>
 	</channel-type>
 
 	<channel-type id="lux">
@@ -867,8 +824,7 @@
 		<tags>
 			<tag>sensors</tag>
 		</tags>
-		<state readOnly="true" pattern="%.1f kLux">
-		</state>
+		<state readOnly="true" pattern="%.1f kLux"></state>
 	</channel-type>
 
 	<channel-type id="voltage">
@@ -879,8 +835,7 @@
 		<tags>
 			<tag>sensors</tag>
 		</tags>
-		<state readOnly="true" pattern="%.1f V">
-		</state>
+		<state readOnly="true" pattern="%.1f V"></state>
 	</channel-type>
 	<channel-type id="ampere">
 		<item-type>Number</item-type>
@@ -890,8 +845,7 @@
 		<tags>
 			<tag>sensors</tag>
 		</tags>
-		<state readOnly="true" pattern="%.1f A">
-		</state>
+		<state readOnly="true" pattern="%.1f A"></state>
 	</channel-type>
 
 	<channel-type id="power">
@@ -902,8 +856,7 @@
 		<tags>
 			<tag>sensors</tag>
 		</tags>
-		<state readOnly="true" pattern="%d W">
-		</state>
+		<state readOnly="true" pattern="%d W"></state>
 	</channel-type>
 
 	<channel-type id="pressure">
@@ -913,8 +866,7 @@
 		<tags>
 			<tag>sensors</tag>
 		</tags>
-		<state readOnly="true" pattern="%.1f hPa">
-		</state>
+		<state readOnly="true" pattern="%.1f hPa"></state>
 	</channel-type>
 
 	<channel-type id="ledcolor">
@@ -925,7 +877,7 @@
 		<category>ColorLight</category>
 	</channel-type>
 
-	<channel-type id="dimmer_brightness">
+	<channel-type id="dimmerBrightness">
 		<item-type>Dimmer</item-type>
 		<label>Brightness</label>
 		<description>The brightness can be set in 16 steps for RGBW/White leds and in 64 steps for RGBWW leds</description>
@@ -935,16 +887,16 @@
 
 	<channel-type id="whitemode">
 		<item-type>Switch</item-type>
-		<label>White mode</label>
+		<label>White Mode</label>
 		<description>Switch lamp to white mode</description>
 		<category>DimmableLight</category>
 	</channel-type>
 
-	<channel-type id="roller_brightness">
+	<channel-type id="rollerBrightness">
 		<item-type>Rollershutter</item-type>
 		<label>Brightness</label>
 		<description>Brightness Up/Down</description>
 		<category>DimmableLight</category>
-		<state readOnly="false"/>
+		<state readOnly="false" />
 	</channel-type>
 </thing:thing-descriptions>

@@ -48,6 +48,7 @@ public class SoulissT11Handler extends SoulissGenericHandler {
 
     private @NonNullByDefault({}) Configuration gwConfigurationMap;
     private Logger logger = LoggerFactory.getLogger(SoulissT11Handler.class);
+
     byte t1nRawState;
     byte xSleepTime = 0;
 

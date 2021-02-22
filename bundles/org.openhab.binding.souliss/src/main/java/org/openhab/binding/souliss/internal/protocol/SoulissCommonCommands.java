@@ -389,7 +389,7 @@ public class SoulissCommonCommands {
     }
 
     /**
-     * Build HEALTY REQUEST Frame
+     * Build HEALTHY REQUEST Frame
      */
     public final void sendHealthyRequestFrame(@Nullable DatagramSocket datagramSocket,
             @Nullable String soulissNodeIPAddressOnLAN, byte nodeIndex, byte userIndex, int iNodes) {

@@ -176,13 +176,13 @@ public final class SoulissBindingConstants {
     public static final String T4N_ARMED_MESSAGE_CHANNEL = "ARMED";
 
     public static final String WHITE_MODE_CHANNEL = "whitemode";
-    public static final String ROLLER_BRIGHTNESS_CHANNEL = "roller_brightness";
-    public static final String DIMMER_BRIGHTNESS_CHANNEL = "dimmer_brightness";
+    public static final String ROLLER_BRIGHTNESS_CHANNEL = "rollerBrightness";
+    public static final String DIMMER_BRIGHTNESS_CHANNEL = "dimmerBrightness";
     public static final String LED_COLOR_CHANNEL = "ledcolor";
 
     public static final String LASTMESSAGE_CHANNEL = "lastMessage";
     public static final String LASTSTATUSSTORED_CHANNEL = "lastStatusStored";
-    public static final String HEALTY_CHANNEL = "healty";
+    public static final String HEALTHY_CHANNEL = "healthy";
 
     public static final String T5N_VALUE_CHANNEL = "value";
     public static final String T6N_VALUE_CHANNEL = "value";
@@ -193,16 +193,16 @@ public final class SoulissBindingConstants {
     public static final String VOLTAGE_CHANNEL = "voltage";
     public static final String POWER_CHANNEL = "power";
 
-    public static final String CONFIG_IP_ADDRESS = "GATEWAY_IP_ADDRESS";
-    public static final String CONFIG_PORT = "GATEWAY_PORT_NUMBER";
-    public static final String CONFIG_LOCAL_PORT = "PREFERRED_LOCAL_PORT_NUMBER";
-    public static final String CONFIG_USER_INDEX = "USER_INDEX"; // DEFAULT 70;
-    public static final String CONFIG_NODE_INDEX = "NODE_INDEX"; // DEFAULT 120; // 0..127
+    public static final String CONFIG_IP_ADDRESS = "gatewayIpAddress";
+    public static final String CONFIG_PORT = "gatewayPortNumber";
+    public static final String CONFIG_LOCAL_PORT = "preferredLocalPortNumber";
+    public static final String CONFIG_USER_INDEX = "userIndex"; // DEFAULT 70;
+    public static final String CONFIG_NODE_INDEX = "nodeIndex"; // DEFAULT 120; // 0..127
     public static final String CONFIG_ID = "ID";
-    public static final String CONFIG_PING_REFRESH = "PING_INTERVAL";
-    public static final String CONFIG_SUBSCRIPTION_REFRESH = "SUBSCRIBTION_INTERVAL";
-    public static final String CONFIG_HEALTHY_REFRESH = "HEALTHY_INTERVAL";
-    public static final String CONFIG_SEND_REFRESH = "SEND_INTERVAL";
+    public static final String CONFIG_PING_REFRESH = "pingInterval";
+    public static final String CONFIG_SUBSCRIPTION_REFRESH = "subscriptionInterval";
+    public static final String CONFIG_HEALTHY_REFRESH = "healthyInterval";
+    public static final String CONFIG_SEND_REFRESH = "sendInterval";
 
     public static final String UUID_NODE_SLOT_SEPARATOR = "-";
 
@@ -212,7 +212,7 @@ public final class SoulissBindingConstants {
 
     public static final String CONFIG_SECURE_SEND = "secureSend";
 
-    public static final String CONFIG_TIMEOUT_TO_REQUEUE = "TIMEOUT_TO_REQUEUE";
+    public static final String CONFIG_TIMEOUT_TO_REQUEUE = "timeoutToRequeue";
 
-    public static final String CONFIG_TIMEOUT_TO_REMOVE_PACKET = "TIMEOUT_TO_REMOVE_PACKET";
+    public static final String CONFIG_TIMEOUT_TO_REMOVE_PACKET = "timeoutToRemovePacket";
 }

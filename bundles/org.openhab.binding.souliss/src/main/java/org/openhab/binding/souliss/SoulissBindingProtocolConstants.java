@@ -42,10 +42,10 @@ public final class SoulissBindingProtocolConstants {
     public static final byte SOULISS_T_EMPTY = 0;
     public static final byte SOULISS_T_RELATED = (byte) 0xFF;
 
-    public static final byte SOULISS_TSERVICE_NODE_HEALTY = (byte) 0x98;
+    public static final byte SOULISS_TSERVICE_NODE_HEALTHY = (byte) 0x98;
     public static final byte SOULISS_TSERVICE_NODE_TIMESTAMP = (byte) 0x99;
 
-    public static final int SOULISS_TSERVICE_NODE_HEALTY_VIRTUAL_SLOT = 998;
+    public static final int SOULISS_TSERVICE_NODE_HEALTHY_VIRTUAL_SLOT = 998;
     public static final int SOULISS_TSERVICE_NODE_TIMESTAMP_VIRTUAL_SLOT = 999;
 
     // Defines for Typicals
